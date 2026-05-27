@@ -58,35 +58,32 @@ const projects = allProjects.sort((a, b) => {
                 </p>
               </div>
 
-              <!-- Technologies -->
-              {project.data.technologies && (
-                <div class="flex-shrink-0 pt-4">
-                  <div class="flex flex-wrap gap-2 justify-start">
+              <!-- Technologies + Link -->
+              <div class="flex-shrink-0 pt-4 flex items-center justify-between gap-4">
+                {project.data.technologies && (
+                  <div class="flex flex-wrap gap-2">
                     {project.data.technologies.map((tech) => (
                       <span class="px-3 py-1 text-gray-950 text-xs 2xl:text-sm rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
                         {tech}
                       </span>
                     ))}
                   </div>
-                </div>
-              )}
+                )}
 
-              <!-- Link -->
-              {project.data.url && (
-                <div class="flex-shrink-0 pt-2">
+                {project.data.url && (
                   <a
                     href={project.data.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center text-gray-950 font-bold hover:text-gold-600 hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter"
+                    class="inline-flex items-center text-gray-950 font-bold hover:text-gold-600 hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter flex-shrink-0"
                   >
                     VER PROYECTO
                     <svg class="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7l7 7-7 7"></path>
                     </svg>
                   </a>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         );
