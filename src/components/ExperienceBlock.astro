@@ -29,33 +29,30 @@ const experiences = allExperiences.sort((a, b) => {
     </div>
 
     <!-- Experience Grid - 2 columns -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16 justify-center items-stretch w-full  lg:grid-rows-1">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-16 justify-center items-stretch w-full">
       {experiences.slice(0, 2).map((exp, index) => {
         return (
-          <div class="experience-card bg-[#E3E2DC]/70 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
-            <!-- Background Gradient -->
-            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-3 rounded-3xl border-gray-950"></div>
+          <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
+            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
             
-            <!-- Content -->
-            <div class="p-8 relative z-10 flex flex-col space-y-4 h-full lg:min-h-[500px] ">
+            <div class="p-6 relative z-10 flex flex-col space-y-3 h-full">
               <!-- Header Section -->
               <div class="flex-shrink-0">
-                <!-- Company & Roles -->
-                <div class="mb-2">
-                  <h3 class="font-stretch-ultra-expanded font-black text-3xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300 text-center mb-4">
-                    {exp.data.company}
-                  </h3>
-                  
-                  <!-- Role Badges -->
-                  <div class="flex flex-wrap gap-2 mt-4 justify-center">
-                    {exp.data.roles.map((role) => (
-                      <span class="px-3 py-1 bg-gold-500 text-gray-950 text-base font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter">
-                        {role}
-                      </span>
-                    ))}
+                <div class="mb-1">
+                  <div class="flex items-center justify-between gap-3">
+                    <h3 class="font-stretch-ultra-expanded font-black text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
+                      {exp.data.company}
+                    </h3>
+                    <div class="flex flex-wrap gap-2 justify-end">
+                      {exp.data.roles.map((role) => (
+                        <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0">
+                          {role}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   
-                  <p class="text-sm text-gray-850 mt-6 flex items-center gap-2 text-gray-800 leading-none font-stretch-expanded tracking-tighter">
+                  <p class="text-sm text-gray-800 mt-3 flex items-center gap-2 leading-none font-stretch-expanded tracking-tighter">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
