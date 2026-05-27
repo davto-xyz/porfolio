@@ -12,32 +12,30 @@ const projects = allProjects.sort((a, b) => {
 });
 ---
 
-<section id="projects" class="py-20 min-h-screen flex items-center">
+<section id="projects" class="py-12 md:py-20 flex items-center">
   <div class="w-full">
 
-    <!-- Header -->
-    <div class="text-center mb-16">
+    <div class="text-center mb-10 md:mb-16">
       <div class="w-full flex justify-center">
         <Title title="Proyectos" />
       </div>
-      <p class="text-xl mt-6 w-full leading-relaxed text-gray-800 font-stretch-expanded tracking-tighter">
+      <p class="text-base md:text-xl mt-4 md:mt-6 w-full leading-relaxed text-gray-800 font-stretch-expanded tracking-tighter px-2">
         Soluciones digitales reales, diseñadas y desarrolladas con tecnologías modernas
       </p>
     </div>
 
-    <!-- Projects Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-16 justify-center items-stretch w-full">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-10 md:mb-16 justify-center items-stretch w-full">
       {projects.map((project) => {
         return (
           <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
             <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
 
-            <div class="p-6 relative z-10 flex flex-col space-y-3 h-full">
-              <div class="flex-shrink-0 flex items-center justify-between gap-3">
-                <h3 class="font-stretch-ultra-expanded font-black text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
+            <div class="p-4 md:p-6 relative z-10 flex flex-col space-y-3 h-full">
+              <div class="flex-shrink-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+                <h3 class="font-stretch-ultra-expanded font-black text-lg md:text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
                   {project.data.title}
                 </h3>
-                <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0">
+                <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0 w-fit">
                   {project.data.tag}
                 </span>
               </div>
@@ -58,12 +56,11 @@ const projects = allProjects.sort((a, b) => {
                 )}
               </div>
 
-              <!-- Technologies + Link -->
-              <div class="flex-shrink-0 pt-3 flex items-center justify-between gap-3">
+              <div class="flex-shrink-0 pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 {project.data.technologies && (
-                  <div class="flex flex-wrap gap-2">
+                  <div class="flex flex-wrap gap-1.5 md:gap-2">
                     {project.data.technologies.map((tech) => (
-                      <span class="px-3 py-1 text-gray-950 text-xs rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
+                      <span class="px-2.5 md:px-3 py-1 text-gray-950 text-xs rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
                         {tech}
                       </span>
                     ))}
@@ -75,7 +72,7 @@ const projects = allProjects.sort((a, b) => {
                     href={project.data.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex border-2 border-gray-950 rounded-full px-3 py-1 items-center text-gray-950 font-bold hover:bg-gray-950 hover:text-[#f6a60d] hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter flex-shrink-0"
+                    class="inline-flex border-2 border-gray-950 rounded-full px-3 py-1 items-center justify-center text-gray-950 font-bold hover:bg-gray-950 hover:text-[#f6a60d] hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter flex-shrink-0 w-fit"
                   >
                     VER PROYECTO
                     <svg class="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
