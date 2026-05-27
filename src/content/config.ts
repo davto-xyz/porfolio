@@ -12,6 +12,7 @@ const projectsCollection = defineCollection({
     technologies: z.array(z.string()).optional(),
     isMainProject: z.boolean().optional(),
     url: z.string().optional(),
+    features: z.array(z.string()).optional(),
     order: z.number().optional(),
   }),
 });
