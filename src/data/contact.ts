@@ -3,7 +3,7 @@ export const contactData = {
   email: 'davto.xyz@gmail.com',
   linkedin: 'https://www.linkedin.com/in/david-torres-l%C3%B3pez/',
   github: 'https://github.com/davto-xyz',
-  twitter: 'https://x.com/davtoxyz',
+  threads: 'https://www.threads.net/@davto.xyz',
   instagram: 'https://www.instagram.com/davto.xyz/',
 };
 
