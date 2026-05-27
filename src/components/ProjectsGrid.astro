@@ -24,7 +24,7 @@ const projects = allProjects.sort((a, b) => {
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-10 md:mb-16 justify-center items-stretch w-full">
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-4 md:gap-5 mb-10 md:mb-16 justify-center items-stretch w-full">
       {projects.map((project) => {
         return (
           <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
@@ -56,7 +56,7 @@ const projects = allProjects.sort((a, b) => {
                 )}
               </div>
 
-              <div class="flex-shrink-0 pt-3 flex flex-col gap-3">
+              <div class="flex-shrink-0 pt-3 flex items-center justify-between gap-3">
                 {project.data.technologies && (
                   <div class="flex flex-wrap gap-1.5 md:gap-2">
                     {project.data.technologies.map((tech) => (
@@ -72,7 +72,7 @@ const projects = allProjects.sort((a, b) => {
                     href={project.data.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex border-2 border-gray-950 rounded-full px-3 py-1 items-center justify-center text-gray-950 font-bold hover:bg-gray-950 hover:text-[#f6a60d] hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter flex-shrink-0 w-fit"
+                    class="inline-flex border-2 border-gray-950 rounded-full px-3 py-1 items-center text-gray-950 font-bold hover:bg-gray-950 hover:text-[#f6a60d] hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter flex-shrink-0"
                   >
                     VER PROYECTO
                     <svg class="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
