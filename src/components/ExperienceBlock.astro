@@ -29,8 +29,8 @@ const experiences = allExperiences.sort((a, b) => {
     </div>
 
     <!-- Experience Grid - 2 columns -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-16 justify-center items-stretch w-full">
-      {experiences.slice(0, 2).map((exp, index) => {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-16 justify-center items-stretch w-full">
+      {experiences.map((exp, index) => {
         return (
           <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
             <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
