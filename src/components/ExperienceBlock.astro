@@ -13,10 +13,6 @@ const experiences = allExperiences.sort((a, b) => {
   return a.data.company.localeCompare(b.data.company);
 });
 
-// Separar la experiencia principal (freelance) del resto
-const mainExperience = experiences[0];
-const otherExperiences = experiences.slice(1);
-
 ---
 
 <section id="experience" class="py-20 min-h-screen flex items-center">
@@ -32,124 +28,65 @@ const otherExperiences = experiences.slice(1);
       </p>
     </div>
 
-    <!-- Experience Grid - Custom Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-16 justify-center items-stretch w-full">
+    <!-- Experience Grid - Single Column -->
+    <div class="max-w-4xl mx-auto">
+      {experiences.map((exp) => {
+        return (
+          <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4] mb-5">
+            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
 
-      <!-- Main Experience Column -->
-      <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
-        <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
+            <div class="p-6 relative z-10 flex flex-col space-y-3 h-full">
+              <!-- Header Section -->
+              <div class="flex-shrink-0">
+                <div class="mb-1">
+                  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
+                    <h3 class="font-stretch-ultra-expanded font-black text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
+                      {exp.data.company}
+                    </h3>
+                    <div class="flex flex-wrap gap-2 justify-start lg:justify-end">
+                      {exp.data.roles.map((role) => (
+                        <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0">
+                          {role}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-        <div class="p-6 relative z-10 flex flex-col space-y-3 h-full">
-          <!-- Header Section -->
-          <div class="flex-shrink-0">
-            <div class="mb-1">
-              <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-                <h3 class="font-stretch-ultra-expanded font-black text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
-                  {mainExperience.data.company}
-                </h3>
-                <div class="flex flex-wrap gap-2 justify-start lg:justify-end">
-                  {mainExperience.data.roles.map((role) => (
-                    <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0">
-                      {role}
+                  <p class="text-sm text-gray-800 mt-3 flex items-center gap-2 leading-none font-stretch-expanded tracking-tighter">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    {exp.data.period}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tasks - Flexible content -->
+              <div class="flex-grow">
+                <ul class="text-gray-900 text-sm space-y-2">
+                  {exp.data.tasks.map((task) => (
+                    <li class="flex items-start gap-2">
+                      <span class="text-gold-500 font-bold text-xs mt-1">•</span>
+                      <p class="flex-1 text-base text-gray-800">{task}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Technologies - Show all -->
+              <div class="flex-shrink-0 pt-4">
+                <div class="flex flex-wrap gap-2 justify-start">
+                  {exp.data.technologies.map((tech) => (
+                    <span class="px-2.5 py-0.5 text-gray-950 text-xs rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
+                      {tech}
                     </span>
                   ))}
                 </div>
               </div>
-
-              <p class="text-sm text-gray-800 mt-3 flex items-center gap-2 leading-none font-stretch-expanded tracking-tighter">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                {mainExperience.data.period}
-              </p>
             </div>
           </div>
-
-          <!-- Tasks - Flexible content -->
-          <div class="flex-grow">
-            <ul class="text-gray-900 text-sm space-y-2">
-              {mainExperience.data.tasks.map((task) => (
-                <li class="flex items-start gap-2">
-                  <span class="text-gold-500 font-bold text-xs mt-1">•</span>
-                  <p class="flex-1 text-base text-gray-800">{task}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <!-- Technologies - Show all -->
-          <div class="flex-shrink-0 pt-4">
-            <div class="flex flex-wrap gap-2 justify-start">
-              {mainExperience.data.technologies.map((tech) => (
-                <span class="px-2.5 py-0.5 text-gray-950 text-xs rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Other Experiences Column -->
-      <div class="flex flex-col gap-5">
-        {otherExperiences.map((exp, index) => {
-          return (
-            <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
-              <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
-
-              <div class="p-6 relative z-10 flex flex-col space-y-3 h-full">
-                <!-- Header Section -->
-                <div class="flex-shrink-0">
-                  <div class="mb-1">
-                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-                      <h3 class="font-stretch-ultra-expanded font-black text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
-                        {exp.data.company}
-                      </h3>
-                      <div class="flex flex-wrap gap-2 justify-start lg:justify-end">
-                        {exp.data.roles.map((role) => (
-                          <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0">
-                            {role}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <p class="text-sm text-gray-800 mt-3 flex items-center gap-2 leading-none font-stretch-expanded tracking-tighter">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                      </svg>
-                      {exp.data.period}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Tasks - Flexible content -->
-                <div class="flex-grow">
-                  <ul class="text-gray-900 text-sm space-y-2">
-                    {exp.data.tasks.map((task) => (
-                      <li class="flex items-start gap-2">
-                        <span class="text-gold-500 font-bold text-xs mt-1">•</span>
-                        <p class="flex-1 text-base text-gray-800">{task}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <!-- Technologies - Show all -->
-                <div class="flex-shrink-0 pt-4">
-                  <div class="flex flex-wrap gap-2 justify-start">
-                    {exp.data.technologies.map((tech) => (
-                      <span class="px-2.5 py-0.5 text-gray-950 text-xs rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+        );
+      })}
     </div>
   </div>
 </section>
