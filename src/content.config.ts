@@ -1,7 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
 
 const projectsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
     name: z.string(),
@@ -18,7 +20,7 @@ const projectsCollection = defineCollection({
 });
 
 const skillsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/skills' }),
   schema: z.object({
     category: z.string(),
     description: z.string(),
@@ -26,15 +28,15 @@ const skillsCollection = defineCollection({
       title: z.string(),
       skills: z.array(z.object({
         name: z.string(),
-        icon: z.string(), // URL del icono SVG o imagen
-        iconType: z.enum(['url', 'emoji', 'svg']).optional().default('emoji'), // Tipo de icono
+        icon: z.string(),
+        iconType: z.enum(['url', 'emoji', 'svg']).optional().default('emoji'),
         color: z.string().optional(),
       }))
     })).optional(),
     skills: z.array(z.object({
       name: z.string(),
-      icon: z.string(), // URL del icono SVG o imagen
-      iconType: z.enum(['url', 'emoji', 'svg']).optional().default('emoji'), // Tipo de icono
+      icon: z.string(),
+      iconType: z.enum(['url', 'emoji', 'svg']).optional().default('emoji'),
       color: z.string().optional(),
     })).optional(),
     order: z.number().optional(),
@@ -43,7 +45,7 @@ const skillsCollection = defineCollection({
 
 
 const experienceCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/experience' }),
   schema: z.object({
     company: z.string(),
     roles: z.array(z.string()),
