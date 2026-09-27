@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Title from './Title.astro';
 
-const allProjects = await getCollection('projects');
+const allProjects = await getCollection('projects', ({ data }) => !data.featured);
 
 const projects = allProjects.sort((a, b) => {
   if (a.data.order && b.data.order) {
