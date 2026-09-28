@@ -57,7 +57,8 @@ Este repositorio contiene el código fuente del portfolio personal. Es un sitio 
 ├── tailwind.config.js        # Fuentes, font-stretch y color gold para Tailwind
 ├── tsconfig.json
 ├── public/
-│   ├── CV-DavidTorres.pdf    # CV descargable desde la navbar
+│   ├── CV-DavidTorres.pdf    # CV en español, descargable desde la navbar
+│   ├── CV-DavidTorres-EN.pdf # CV en inglés (se sirve en la versión inglesa)
 │   ├── favicon.png
 │   └── img/                  # Imágenes estáticas (p. ej. icono de Threads)
 └── src/
@@ -303,7 +304,16 @@ subcategories:
 6. **`AboutMe`** — sección "Sobre mí".
 7. **`ContactBlock`** — formulario/enlaces de contacto.
 
-La navegación (`NavBar.astro`) enlaza a: **Proyectos · Experiencia · Habilidades · Sobre mí · Contacto**, e incluye el **selector de idioma ES / EN** y un botón para **descargar el CV** (`public/CV-DavidTorres.pdf`, único para ambos idiomas).
+La navegación (`NavBar.astro`) enlaza a: **Proyectos · Experiencia · Habilidades · Sobre mí · Contacto**, e incluye el **selector de idioma ES / EN** y un botón para **descargar el CV**.
+
+Hay un CV por idioma, y la ruta sale del diccionario (`nav.cvHref`), así que el botón sirve el que toca:
+
+| Idioma  | Archivo                          |
+| ------- | -------------------------------- |
+| Español | `public/CV-DavidTorres.pdf`      |
+| Inglés  | `public/CV-DavidTorres-EN.pdf`   |
+
+Para actualizar un CV basta con **sustituir el PDF conservando el nombre**. Se referencian por su ruta de `public/` (no con `import`) para que se descarguen con su nombre real y no se dupliquen en el build.
 
 Los datos de contacto y redes sociales están centralizados en **`src/data/contact.ts`**.
 

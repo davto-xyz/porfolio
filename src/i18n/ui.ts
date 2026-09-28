@@ -24,6 +24,9 @@ const es = {
     about: 'SOBRE MÍ',
     contact: 'CONTACTO',
     cv: 'Descargar CV',
+    // Archivos de `public/`, referenciados por su ruta para que se descarguen
+    // con su nombre y no se dupliquen en el build
+    cvHref: '/CV-DavidTorres.pdf',
     langLabel: 'Cambiar idioma',
     langShort: { es: 'ES', en: 'EN' },
   },
@@ -108,6 +111,7 @@ const en: typeof es = {
     about: 'ABOUT ME',
     contact: 'CONTACT',
     cv: 'Download CV',
+    cvHref: '/CV-DavidTorres-EN.pdf',
     langLabel: 'Switch language',
     langShort: { es: 'ES', en: 'EN' },
   },

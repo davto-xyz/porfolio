@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import Logo from '../assets/images/logo.png';
-import CV from '../../public/CV-DavidTorres.pdf';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
 
@@ -47,7 +46,7 @@ const {
     <div class="navbar-animate flex flex-wrap items-stretch justify-end gap-2 sm:gap-3">
       <LanguageSwitcher />
       <a 
-        href={CV}
+        href={t.nav.cvHref}
         class='hover:bg-transparent text-gray-950 font-bold rounded-full border-3 border-gray-950 py-4 px-4 text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2'
         title={t.nav.cv}
         aria-label={t.nav.cv}
