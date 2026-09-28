@@ -50,6 +50,7 @@ Defined in `src/content/config.ts` with Zod schemas. Three collections: `project
 - The `ES / EN` switcher is `src/components/LanguageSwitcher.astro`, rendered in the NavBar next to the CV button.
 - **The URL never shows `/en/` during normal navigation.** `netlify.toml` has cookie-conditioned rewrites (`status = 200`, `conditions = {Cookie = ["lang_en"]}`) that serve the English HTML from `/`. Netlify cookie conditions only test for a cookie's *presence*, hence the name `lang_en`: present means English. The switcher's links point at the real pages (`/` and `/en/`) so it degrades without JS; its inline script sets or clears the cookie, reloads, and syncs the cookie to the page's language on load. Those rewrites must stay above the generic `/*` 404 rule, and `/` and `/404` send `Vary: Cookie`.
 - `/en/` stays reachable and indexable on purpose — it is what keeps the English version in search results and what works when shared.
+- There is one CV per locale (`public/CV-DavidTorres.pdf`, `public/CV-DavidTorres-EN.pdf`), picked through `nav.cvHref` in the dictionary. Reference files in `public/` by path, never with `import` — importing makes Vite emit a second hashed copy and the browser saves it under that hashed name.
 - Adding a locale also means: a new `src/pages/<code>/` directory, its path in `HOME_PATHS` in `src/scripts/smoothScroll.js`, and its 404 redirects in `netlify.toml` (locale rules must come before the generic `/*`).
 
 ## Key Conventions
