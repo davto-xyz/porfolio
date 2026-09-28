@@ -1,0 +1,40 @@
+---
+import { getLangFromUrl, getLanguageOptions, useTranslations } from '../i18n/utils';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// El sitio es de una sola página, así que cada idioma apunta a su home
+const options = getLanguageOptions('/');
+---
+
+<div
+  class={`flex items-center rounded-full border-3 border-gray-950 p-0.5 sm:p-1 gap-0.5 sm:gap-1 ${className}`}
+  role="group"
+  aria-label={t.nav.langLabel}
+>
+  {options.map((option) => (
+    <a
+      href={option.href}
+      hreflang={option.lang}
+      lang={option.lang}
+      title={option.label}
+      aria-current={option.lang === lang ? 'page' : undefined}
+      class={`
+        rounded-full px-2.5 py-1.5 text-sm sm:px-3 sm:py-2 sm:text-base font-bold uppercase tracking-tighter font-stretch-ultra-expanded transition-all duration-300
+        ${option.lang === lang
+          ? 'bg-gold-500 text-gray-950'
+          : 'text-gray-950 hover:text-gold-500 hover:scale-105'
+        }
+      `}
+    >
+      {t.nav.langShort[option.lang]}
+    </a>
+  ))}
+</div>

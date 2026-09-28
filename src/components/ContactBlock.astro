@@ -1,6 +1,10 @@
 ---
 import Title from './Title.astro';
 import { contactData } from '../data/contact';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 interface Props {
   class?: string;
@@ -18,9 +22,9 @@ const {
     
     <!-- Header -->
     <div class="text-center mb-8">
-      <Title title="Contacto"></Title>
+      <Title title={t.contact.title}></Title>
       <p class="font-base text-lg text-gray-950 font-stretch-125% mt-6 leading-relaxed max-w-3xl mx-auto">
-        Tanto si tienes un proyecto interesante, una oportunidad laboral, o simplemente quieres conectar, me encantaría escucharte.
+        {t.contact.subtitle}
       </p>
     </div>
 
@@ -37,14 +41,14 @@ const {
             </svg>
           </div>
           <h3 class="text-xl font-black text-gray-950 group-hover:text-gold-500 transition-colors duration-300 mb-3 font-stretch-ultra-expanded uppercase">
-            Email
+            {t.contact.email.title}
           </h3>
-          <p class="font-light text-base text-gray-950 font-stretch-125% mb-6 flex-grow">La forma más directa</p>
+          <p class="font-light text-base text-gray-950 font-stretch-125% mb-6 flex-grow">{t.contact.email.description}</p>
           <a 
             href={`mailto:${contactData.email}`}
             class="text-gray-950 bg-gold-500 font-base px-6 py-3 rounded-full border-3 hover:bg-amber-100 hover:scale-105 hover:transition-all duration-300 mt-auto font-stretch-ultra-expanded"
           >
-            Enviar correo
+            {t.contact.email.cta}
           </a>
         </div>
       </div>
@@ -59,16 +63,16 @@ const {
             </svg>
           </div>
           <h3 class="text-xl font-black text-gray-950 group-hover:text-gold-500 transition-colors duration-300 mb-3 font-stretch-ultra-expanded uppercase">
-            LinkedIn
+            {t.contact.linkedin.title}
           </h3>
-          <p class="font-light text-base text-gray-950 font-stretch-125% mb-6 flex-grow">Conecta profesionalmente</p>
+          <p class="font-light text-base text-gray-950 font-stretch-125% mb-6 flex-grow">{t.contact.linkedin.description}</p>
           <a 
             href={contactData.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             class="text-gray-950 bg-gold-500 font-base px-6 py-3 rounded-full border-3 hover:bg-amber-100 hover:scale-105 hover:transition-all duration-300 mt-auto font-stretch-ultra-expanded"
           >
-            Ver perfil
+            {t.contact.linkedin.cta}
           </a>
         </div>
       </div>

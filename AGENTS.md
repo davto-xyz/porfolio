@@ -2,7 +2,7 @@
 
 ## Project
 
-Personal portfolio site for David Torres — a static Astro 5 site deployed on Netlify. Spanish-language content. Single-page layout.
+Personal portfolio site for David Torres — a static Astro 5 site deployed on Netlify. Bilingual (Spanish default, English under `/en/`). Single-page layout per locale.
 
 ## Commands
 
@@ -23,10 +23,11 @@ No test runner, linter, or typecheck command is configured.
 
 ## Architecture
 
-- `src/pages/index.astro` — single entry page, composes all sections
-- `src/layouts/Layout.astro` — base HTML shell (includes NavBar, Footer, global CSS, smooth scroll script)
-- `src/layouts/Layout404.astro` — separate layout for the 404 page
+- `src/pages/index.astro` — Spanish entry page, composes all sections; `src/pages/en/index.astro` is the English twin
+- `src/layouts/Layout.astro` — base HTML shell (includes NavBar, Footer, global CSS, smooth scroll script, `hreflang` alternates)
+- `src/layouts/Layout404.astro` — separate layout for the 404 pages
 - `src/components/` — Astro UI components (one per section: Hero, Experience, Skills, About, Contact, etc.)
+- `src/i18n/` — `ui.ts` (text dictionaries), `utils.ts` (language detection + localized paths), `content.ts` (content-collection translation helpers)
 - `src/content/` — Astro content collections (MDX files with frontmatter validated by `src/content/config.ts`):
   - `projects/` — portfolio projects
   - `skills/` — skill categories
@@ -39,9 +40,19 @@ No test runner, linter, or typecheck command is configured.
 
 Defined in `src/content/config.ts` with Zod schemas. Three collections: `projects`, `skills`, `experience`. Each uses `type: 'content'` (MDX). Adding a new entry means creating an `.mdx` file in the right directory with the required frontmatter fields.
 
+## i18n
+
+- Astro's native i18n routing, configured in `astro.config.mjs`: `locales: ['es', 'en']`, `defaultLocale: 'es'`, `prefixDefaultLocale: false`. Spanish lives at `/`, English at `/en/`.
+- Components resolve their locale with `getLangFromUrl(Astro.url)` and read strings from `useTranslations(lang)` as `t.section.key`. No client-side state — everything resolves at build time.
+- **Never hardcode user-facing text in a component.** Add the key to the `es` dictionary in `src/i18n/ui.ts`, then to `en`. The English dictionary is typed as `typeof es`, so a missing key shows up as a type error in the editor — note `pnpm build` only transpiles, it does not typecheck (no `astro check` in this repo), so verify translations by eye too.
+- Content collections keep Spanish at the frontmatter root and English inside an optional `en` object; untranslated fields fall back to Spanish. `localizeExperience` / `localizeProject` / `localizeSkill` (in `src/i18n/content.ts`) merge them and return flat data, so templates use `exp.period`, not `exp.data.period`.
+- Company names, technology lists, icons and URLs are shared across locales — they are not part of the `en` block.
+- The `ES / EN` switcher is `src/components/LanguageSwitcher.astro`, rendered in the NavBar next to the CV button; it links to the other locale's home.
+- Adding a locale also means: a new `src/pages/<code>/` directory, its path in `HOME_PATHS` in `src/scripts/smoothScroll.js`, and its 404 redirects in `netlify.toml` (locale rules must come before the generic `/*`).
+
 ## Key Conventions
 
-- Site language is **Spanish** (`lang="es"`), UI text and content are in Spanish
+- Default language is **Spanish** (`lang="es"` at `/`); English is a full translation at `/en/`
 - Accent color is **gold `#F6A60D`** — used throughout with custom Tailwind utilities (`text-gold-500`, `bg-gold-500`, etc.) defined in `global.css` rather than via Tailwind config
 - `tailwind.config.js` exists but Tailwind v4 is loaded via PostCSS plugin; the config primarily adds custom font family and the gold color
 - Fonts loaded via `@fontsource/inter` CSS imports in `global.css` (weights 400, 700, 900)

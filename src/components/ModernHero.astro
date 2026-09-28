@@ -2,6 +2,10 @@
 import { Image } from 'astro:assets';
 import SocialIcons from './SocialIcons.astro';
 import heroImage from '../assets/images/hero.png';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <section id="hero" class="bg-[#E3E2DC] overflow-visible h-screen  z-40 flex md:block  md:pt-0">
@@ -13,19 +17,19 @@ import heroImage from '../assets/images/hero.png';
         
         <!-- Large Title -->
         <h1 class="hero-animate text-3xl sm:text-4xl md:text-4xl font-black text-black leading-none mb-2.5 tracking-tighter font-stretch-ultra-expanded uppercase w-full" id="principal">
-          ¡Hola!, soy David
+          {t.hero.greeting}
         </h1>
         
         <!-- Subtitle -->
         <div class="hero-animate mb-5 break-words" data-speed="0.8">
           <h2 class="text-center lg:text-left text-3xl sm:text-2xl md:text-3xl lg:3xl font-medium font-stretch-ultra-expanded text-black mb-2 uppercase tracking-tighter leading-none flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3">
-           <span class="inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-black bg-gold-500 font-bold text-lg sm:text-xl rounded-full border-3 border-black">Full-stack Developer</span>
+           <span class="inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-black bg-gold-500 font-bold text-lg sm:text-xl rounded-full border-3 border-black">{t.hero.roles[0]}</span>
            <span class="text-black font-bold">&</span>
-           <span class="inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-black bg-gold-500 font-bold text-lg sm:text-xl rounded-full border-3 border-black">Data Analyst</span>
+           <span class="inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-black bg-gold-500 font-bold text-lg sm:text-xl rounded-full border-3 border-black">{t.hero.roles[1]}</span>
           </h2>
         </div>
         <div class="hero-animate mb-5 text-center lg:text-left text-base lg:text-lg text-gray-800 leading-none font-stretch-expanded tracking-normal" data-speed="0.7">
-          Me apasiona crear soluciones digitales que realmente importen. Transformo ideas en productos web que conectan con los usuarios y generan resultados reales.
+          {t.hero.description}
         </div>
         
         <!-- Social Icons -->
@@ -46,7 +50,7 @@ import heroImage from '../assets/images/hero.png';
           <!-- Actual Image -->
           <Image 
             src={heroImage} 
-            alt="David Torres - Portfolio" 
+            alt={t.hero.imageAlt} 
             class="md:w-full md:h-full  object-cover hover:scale-110 transition-transform duration-500 relative z-20"
             loading="eager"
             format="webp"

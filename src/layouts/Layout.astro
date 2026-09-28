@@ -2,27 +2,39 @@
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
 import ToStart from '../components/ToStart.astro';
+import { getLangFromUrl, getLanguageOptions, useTranslations } from '../i18n/utils';
 import '../styles/global.css';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// hreflang absoluto si `site` está configurado en astro.config; si no, relativo
+const absolute = (path: string) => (Astro.site ? new URL(path, Astro.site).href : path);
+const alternates = getLanguageOptions('/');
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
 	<head>
 		<meta name="theme-color" content="#E3E2DC">
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/png" href="favicon.png">
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content="Portfolio de David Torres - Full Stack Developer especializado en tecnologías web modernas" />
-		<title>David Torres - Portfolio</title>
+		<meta name="description" content={t.meta.description} />
+		{alternates.map((alternate) => (
+			<link rel="alternate" hreflang={alternate.lang} href={absolute(alternate.href)} />
+		))}
+		<link rel="alternate" hreflang="x-default" href={absolute('/')} />
+		<title>{t.meta.title}</title>
 	</head>
 	<body class="font-sans bg-[#E3E2DC] px-8 sm:px-8 md:px-12 lg:px-12 xl:px-[8rem] 2xl:px-[10rem] responsive-ultra-wide-margins 2xl:pt-5 overflow-x-hidden">
 		<NavBar></NavBar>
 		<slot />
-		
+
 		<ToStart></ToStart>
 		<Footer></Footer>
-		
+
 		<script>
 			import '../scripts/smoothScroll.js';
 		</script>

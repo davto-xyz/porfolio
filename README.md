@@ -1,8 +1,8 @@
 # Portfolio — David Torres
 
-Portfolio personal de **David Torres**, Full Stack Developer. Sitio estático, one-page, en español, construido con **Astro 6** y **Tailwind CSS v4**, y desplegado en **Netlify**.
+Portfolio personal de **David Torres**, Full Stack Developer. Sitio estático, one-page, bilingüe (español e inglés), construido con **Astro 6** y **Tailwind CSS v4**, y desplegado en **Netlify**.
 
-> Idioma de la interfaz y los contenidos: **Español** (`<html lang="es">`).
+> Idiomas: **Español** (por defecto, en `/`) e **Inglés** (en `/en/`). Se cambia con el selector **ES / EN** de la parte superior.
 
 ---
 
@@ -12,6 +12,7 @@ Portfolio personal de **David Torres**, Full Stack Developer. Sitio estático, o
 - [Tecnologías](#tecnologías)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Puesta en marcha](#puesta-en-marcha)
+- [Internacionalización (i18n)](#internacionalización-i18n)
 - [Sistema de diseño](#sistema-de-diseño)
 - [Colecciones de contenido](#colecciones-de-contenido)
 - [Secciones de la página](#secciones-de-la-página)
@@ -24,9 +25,10 @@ Portfolio personal de **David Torres**, Full Stack Developer. Sitio estático, o
 
 Este repositorio contiene el código fuente del portfolio personal. Es un sitio **100% estático** (sin SSR): todas las páginas se pre-renderizan en build y se sirven como HTML, CSS y JS desde Netlify.
 
-- **Una sola página** (`/`) que compone varias secciones (hero, proyectos, experiencia, habilidades, sobre mí, contacto).
+- **Una sola página por idioma** (`/` en español y `/en/` en inglés) que compone varias secciones (hero, proyectos, experiencia, habilidades, sobre mí, contacto).
 - **Contenido basado en colecciones** (archivos `.mdx`) con frontmatter validado por Zod, lo que permite añadir proyectos, experiencias o habilidades editando Markdown sin tocar el código.
-- Página **404** propia.
+- **Bilingüe**: textos de interfaz en `src/i18n/` y traducciones de contenido en el propio frontmatter.
+- Página **404** propia en cada idioma.
 
 ---
 
@@ -49,7 +51,7 @@ Este repositorio contiene el código fuente del portfolio personal. Es un sitio 
 
 ```text
 .
-├── astro.config.mjs          # Configuración de Astro (integraciones + Tailwind/PostCSS)
+├── astro.config.mjs          # Configuración de Astro (i18n, integraciones + Tailwind/PostCSS)
 ├── netlify.toml              # Configuración de build, redirects y headers de Netlify
 ├── tailwind.config.js        # Fuentes, font-stretch y color gold para Tailwind
 ├── tsconfig.json
@@ -59,12 +61,19 @@ Este repositorio contiene el código fuente del portfolio personal. Es un sitio 
 │   └── img/                  # Imágenes estáticas (p. ej. icono de Threads)
 └── src/
     ├── pages/
-    │   ├── index.astro       # Página única: compone todas las secciones
-    │   └── 404.astro         # Página de error
+    │   ├── index.astro       # Home en español: compone todas las secciones
+    │   ├── 404.astro         # Página de error en español
+    │   └── en/
+    │       ├── index.astro   # Home en inglés (mismas secciones)
+    │       └── 404.astro     # Página de error en inglés
     ├── layouts/
-    │   ├── Layout.astro      # Shell HTML base (NavBar, Footer, ToStart, CSS global)
+    │   ├── Layout.astro      # Shell HTML base (NavBar, Footer, ToStart, CSS global, hreflang)
     │   └── Layout404.astro   # Layout específico del 404
     ├── components/           # Componentes Astro (uno por sección + utilidades)
+    ├── i18n/                 # Internacionalización
+    │   ├── ui.ts             # Diccionarios de textos (es / en)
+    │   ├── utils.ts          # Detección de idioma y rutas localizadas
+    │   └── content.ts        # Traducción de las entradas de las colecciones
     ├── content/              # Colecciones de contenido en MDX
     │   ├── projects/
     │   ├── skills/
@@ -94,6 +103,66 @@ pnpm preview      # Previsualizar el build de producción localmente
 ```
 
 > No hay linter, typecheck ni tests configurados en este proyecto.
+
+---
+
+## Internacionalización (i18n)
+
+El sitio se publica en **español** (idioma por defecto, sin prefijo) e **inglés** (bajo `/en/`), usando el enrutado i18n nativo de Astro declarado en `astro.config.mjs`:
+
+```js
+i18n: {
+  locales: ['es', 'en'],
+  defaultLocale: 'es',
+  routing: { prefixDefaultLocale: false },
+}
+```
+
+| Ruta       | Idioma   | Archivo                    |
+| ---------- | -------- | -------------------------- |
+| `/`        | Español  | `src/pages/index.astro`    |
+| `/en/`     | Inglés   | `src/pages/en/index.astro` |
+| `/404`     | Español  | `src/pages/404.astro`      |
+| `/en/404`  | Inglés   | `src/pages/en/404.astro`   |
+
+### Cómo funciona
+
+- **Detección de idioma**: cada componente llama a `getLangFromUrl(Astro.url)` (`src/i18n/utils.ts`), que lee el primer segmento de la URL. Al no haber estado en cliente, todo se resuelve en build.
+- **Textos de interfaz**: viven en `src/i18n/ui.ts`, en dos diccionarios (`es` y `en`). El componente obtiene el suyo con `useTranslations(lang)` y lo usa como `t.seccion.clave`.
+- **Tipado**: el diccionario inglés se declara como `typeof es`, así que si se añade una clave al español y falta en inglés, **el editor marca el error** en `ui.ts`. Ojo: `pnpm build` transpila sin comprobar tipos, así que esa red de seguridad es del editor (o de `astro check`, que no está instalado en el proyecto).
+- **Selector de idioma**: `src/components/LanguageSwitcher.astro`, integrado en la `NavBar` junto al botón de CV. Enlaza a la home del otro idioma y marca el activo con el color oro.
+- **SEO**: `Layout.astro` emite `<html lang="…">` y etiquetas `<link rel="alternate" hreflang="…">` para ambos idiomas más `x-default`. Si se define `site` en `astro.config.mjs`, esas URLs pasan a ser absolutas automáticamente (recomendado por Google).
+
+### Añadir o cambiar un texto de interfaz
+
+1. Añade la clave en el diccionario `es` de `src/i18n/ui.ts`.
+2. Añade la misma clave en `en` (si falta, el build avisa).
+3. Úsala en el componente con `t.tuSeccion.tuClave`.
+
+### Traducir contenido de las colecciones
+
+El frontmatter guarda el **español en la raíz** y el inglés dentro de un objeto **`en`**. Sólo hay que traducir lo que cambia: nombres de empresa, tecnologías, iconos y URLs se comparten entre idiomas. Si un campo no se traduce, se usa el español como fallback.
+
+```yaml
+---
+company: "Openred Soluciones"
+period: "Mayo 2018 - Marzo 2019"
+tasks: ["Desarrollo de páginas web con Wordpress"]
+en:
+  period: "May 2018 - March 2019"
+  tasks: ["Development of websites with WordPress"]
+---
+```
+
+Los helpers de `src/i18n/content.ts` (`localizeExperience`, `localizeProject`, `localizeSkill`) hacen la mezcla. Devuelven los datos ya planos, por lo que en las plantillas se usa `exp.period` en lugar de `exp.data.period`.
+
+### Añadir un idioma nuevo
+
+1. Añádelo a `languages` en `src/i18n/ui.ts` y crea su diccionario.
+2. Añádelo a `locales` en `astro.config.mjs`.
+3. Crea `src/pages/<codigo>/index.astro` y `src/pages/<codigo>/404.astro` (copias de los ingleses, ajustando las rutas de import).
+4. Añade su bloque de traducción en el frontmatter del contenido.
+5. Añade su ruta a `HOME_PATHS` en `src/scripts/smoothScroll.js` y sus redirects en `netlify.toml`.
 
 ---
 
@@ -137,6 +206,10 @@ tasks: ["Tarea 1", "Tarea 2"]          # array
 technologies: ["React", "Astro"]       # array
 type: "contract"                       # 'full-time' | 'freelance' | 'contract'
 order: 1                               # opcional, define el orden de visualización
+en:                                    # opcional, traducción al inglés
+  roles: ["Full Stack Developer"]
+  period: "Month YYYY - Present"
+  tasks: ["Task 1", "Task 2"]
 ---
 ```
 
@@ -155,6 +228,12 @@ isMainProject: false                   # opcional
 url: "https://..."                     # opcional, enlace "VER PROYECTO"
 features: ["Feature 1", "Feature 2"]   # opcional
 order: 1                               # opcional
+en:                                    # opcional, traducción al inglés
+  title: "Project name"
+  description: "Short description"
+  alt: "Alt text"
+  tag: "Web App"
+  features: ["Feature 1", "Feature 2"]
 ---
 ```
 
@@ -171,6 +250,7 @@ skills:
     icon: "🟦"                          # emoji, URL o SVG
     iconType: "emoji"                  # 'url' | 'emoji' | 'svg' (por defecto 'emoji')
     color: "#61DAFB"                   # opcional
+    en: { name: "React" }              # opcional; sólo hace falta en las soft skills
 # Opcional: subcategorías
 subcategories:
   - title: "Frontend"
@@ -184,7 +264,7 @@ subcategories:
 
 ## Secciones de la página
 
-`src/pages/index.astro` compone las secciones en este orden:
+`src/pages/index.astro` (y su equivalente en inglés, `src/pages/en/index.astro`) compone las secciones en este orden:
 
 1. **`SectionIndicator`** — indicador de sección activa.
 2. **`ModernHero`** — cabecera principal.
@@ -194,7 +274,7 @@ subcategories:
 6. **`AboutMe`** — sección "Sobre mí".
 7. **`ContactBlock`** — formulario/enlaces de contacto.
 
-La navegación (`NavBar.astro`) enlaza a: **Proyectos · Experiencia · Habilidades · Sobre mí · Contacto**, e incluye un botón para **descargar el CV** (`public/CV-DavidTorres.pdf`).
+La navegación (`NavBar.astro`) enlaza a: **Proyectos · Experiencia · Habilidades · Sobre mí · Contacto**, e incluye el **selector de idioma ES / EN** y un botón para **descargar el CV** (`public/CV-DavidTorres.pdf`, único para ambos idiomas).
 
 Los datos de contacto y redes sociales están centralizados en **`src/data/contact.ts`**.
 
@@ -205,7 +285,7 @@ Los datos de contacto y redes sociales están centralizados en **`src/data/conta
 Configurado en `netlify.toml`:
 
 - **Build**: `npm run build` → salida en `dist/`.
-- **404**: redirect de rutas no encontradas a `/404.html` con status 404.
+- **404**: redirect de rutas no encontradas a `/404.html` con status 404. Las rutas bajo `/en/*` van al 404 en inglés (`/en/404/index.html`); **el orden de los redirects importa**, las reglas de `/en/*` van antes que la genérica `/*`.
 - **Headers**: cabeceras de seguridad (`X-Frame-Options`, `X-Content-Type-Options`, etc.) y caché de assets, imágenes y fuentes.
 
 > **Versión de Node**: Astro 6 requiere **Node 22.12+**. `netlify.toml` declara `NODE_VERSION = "22"`.

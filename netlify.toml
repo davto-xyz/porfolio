@@ -6,6 +6,19 @@
   NODE_VERSION = "22"
   
 # Redirect 404s to /404 (cambia la URL)
+# El orden importa: las reglas de /en/* van antes que la genérica /*
+  [[redirects]]
+    from = "/en/*"
+    to = "/en/404"
+    status = 302
+    force = false
+
+  # Servir la página 404 en inglés con status correcto
+  [[redirects]]
+    from = "/en/404"
+    to = "/en/404/index.html"
+    status = 404
+
   [[redirects]]
     from = "/*"
     to = "/404"

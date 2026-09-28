@@ -1,7 +1,10 @@
 // Función simple de smooth scroll solo para enlaces de la home
+// Rutas de la home en cada idioma: '/' (español) y '/en/' (inglés)
+const HOME_PATHS = ['/', '/en', '/en/'];
+
 function initHomePageSmoothScroll() {
   // Solo ejecutar en la página principal
-  if (window.location.pathname !== '/') {
+  if (!HOME_PATHS.includes(window.location.pathname)) {
     return;
   }
 
