@@ -5,6 +5,32 @@
 [build.environment]
   NODE_VERSION = "22"
   
+# Idioma sin `/en/` en la URL
+#
+# El sitio se construye como dos páginas estáticas (`/` y `/en/`). Cuando el
+# visitante tiene la cookie `lang_en`, estas reglas sirven el HTML inglés desde
+# `/` mediante un rewrite (status 200): el contenido cambia, la URL no.
+#
+# La cookie la pone el selector de idioma (`LanguageSwitcher.astro`). Las
+# condiciones de cookie de Netlify sólo miran si la cookie existe, no su valor,
+# de ahí el nombre `lang_en`: presente = inglés, ausente = español.
+#
+# `/en/` sigue existiendo y siendo indexable: es la URL que ven los buscadores y
+# la que funciona al compartirla. Sólo la navegación normal se queda en `/`.
+  [[redirects]]
+    from = "/"
+    to = "/en/index.html"
+    status = 200
+    force = true
+    conditions = {Cookie = ["lang_en"]}
+
+  [[redirects]]
+    from = "/404"
+    to = "/en/404/index.html"
+    status = 404
+    force = true
+    conditions = {Cookie = ["lang_en"]}
+
 # Redirect 404s to /404 (cambia la URL)
 # El orden importa: las reglas de /en/* van antes que la genérica /*
   [[redirects]]
@@ -40,6 +66,17 @@
 
 [context.branch-deploy]
   command = "npm run build"
+
+# La home y el 404 cambian de idioma según la cookie: que las cachés lo sepan
+[[headers]]
+  for = "/"
+  [headers.values]
+    Vary = "Cookie"
+
+[[headers]]
+  for = "/404"
+  [headers.values]
+    Vary = "Cookie"
 
 # Headers for better performance and security
 [[headers]]

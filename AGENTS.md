@@ -47,7 +47,9 @@ Defined in `src/content/config.ts` with Zod schemas. Three collections: `project
 - **Never hardcode user-facing text in a component.** Add the key to the `es` dictionary in `src/i18n/ui.ts`, then to `en`. The English dictionary is typed as `typeof es`, so a missing key shows up as a type error in the editor — note `pnpm build` only transpiles, it does not typecheck (no `astro check` in this repo), so verify translations by eye too.
 - Content collections keep Spanish at the frontmatter root and English inside an optional `en` object; untranslated fields fall back to Spanish. `localizeExperience` / `localizeProject` / `localizeSkill` (in `src/i18n/content.ts`) merge them and return flat data, so templates use `exp.period`, not `exp.data.period`.
 - Company names, technology lists, icons and URLs are shared across locales — they are not part of the `en` block.
-- The `ES / EN` switcher is `src/components/LanguageSwitcher.astro`, rendered in the NavBar next to the CV button; it links to the other locale's home.
+- The `ES / EN` switcher is `src/components/LanguageSwitcher.astro`, rendered in the NavBar next to the CV button.
+- **The URL never shows `/en/` during normal navigation.** `netlify.toml` has cookie-conditioned rewrites (`status = 200`, `conditions = {Cookie = ["lang_en"]}`) that serve the English HTML from `/`. Netlify cookie conditions only test for a cookie's *presence*, hence the name `lang_en`: present means English. The switcher's links point at the real pages (`/` and `/en/`) so it degrades without JS; its inline script sets or clears the cookie, reloads, and syncs the cookie to the page's language on load. Those rewrites must stay above the generic `/*` 404 rule, and `/` and `/404` send `Vary: Cookie`.
+- `/en/` stays reachable and indexable on purpose — it is what keeps the English version in search results and what works when shared.
 - Adding a locale also means: a new `src/pages/<code>/` directory, its path in `HOME_PATHS` in `src/scripts/smoothScroll.js`, and its 404 redirects in `netlify.toml` (locale rules must come before the generic `/*`).
 
 ## Key Conventions

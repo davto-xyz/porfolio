@@ -13,6 +13,7 @@ Portfolio personal de **David Torres**, Full Stack Developer. Sitio estático, o
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Puesta en marcha](#puesta-en-marcha)
 - [Internacionalización (i18n)](#internacionalización-i18n)
+  - [URL sin `/en/`](#url-sin-en)
 - [Sistema de diseño](#sistema-de-diseño)
 - [Colecciones de contenido](#colecciones-de-contenido)
 - [Secciones de la página](#secciones-de-la-página)
@@ -125,13 +126,40 @@ i18n: {
 | `/404`     | Español  | `src/pages/404.astro`      |
 | `/en/404`  | Inglés   | `src/pages/en/404.astro`   |
 
+> En producción, la navegación normal **no muestra `/en/` en la barra de direcciones**: ver [URL sin `/en/`](#url-sin-en).
+
 ### Cómo funciona
 
 - **Detección de idioma**: cada componente llama a `getLangFromUrl(Astro.url)` (`src/i18n/utils.ts`), que lee el primer segmento de la URL. Al no haber estado en cliente, todo se resuelve en build.
 - **Textos de interfaz**: viven en `src/i18n/ui.ts`, en dos diccionarios (`es` y `en`). El componente obtiene el suyo con `useTranslations(lang)` y lo usa como `t.seccion.clave`.
 - **Tipado**: el diccionario inglés se declara como `typeof es`, así que si se añade una clave al español y falta en inglés, **el editor marca el error** en `ui.ts`. Ojo: `pnpm build` transpila sin comprobar tipos, así que esa red de seguridad es del editor (o de `astro check`, que no está instalado en el proyecto).
-- **Selector de idioma**: `src/components/LanguageSwitcher.astro`, integrado en la `NavBar` junto al botón de CV. Enlaza a la home del otro idioma y marca el activo con el color oro.
+- **Selector de idioma**: `src/components/LanguageSwitcher.astro`, integrado en la `NavBar` junto al botón de CV. Marca el idioma activo con el color oro y su altura la iguala el `items-stretch` del contenedor, de modo que coincide con el botón de CV.
 - **SEO**: `Layout.astro` emite `<html lang="…">` y etiquetas `<link rel="alternate" hreflang="…">` para ambos idiomas más `x-default`. Si se define `site` en `astro.config.mjs`, esas URLs pasan a ser absolutas automáticamente (recomendado por Google).
+
+### URL sin `/en/`
+
+Aunque el inglés se construye en `/en/`, quien navega por el sitio ve siempre `/`. Lo consigue un **rewrite de Netlify condicionado por cookie**, declarado en `netlify.toml`:
+
+```toml
+[[redirects]]
+  from = "/"
+  to = "/en/index.html"
+  status = 200          # rewrite, no redirect: la URL no cambia
+  force = true
+  conditions = {Cookie = ["lang_en"]}
+```
+
+Las condiciones de cookie de Netlify sólo comprueban si la cookie **existe**, no su valor; de ahí el nombre `lang_en`: presente = inglés, ausente = español. Hay una regla equivalente para `/404`, y ambas rutas envían `Vary: Cookie` para que ninguna caché reutilice el idioma anterior.
+
+El flujo completo:
+
+1. El selector enlaza a `/` y a `/en/` (URLs reales). Sin JavaScript, el enlace navega y el sitio funciona: sólo se ve el prefijo en la barra.
+2. Con JavaScript, el script del componente intercepta el clic, pone o borra la cookie `lang_en` y recarga `/`. Netlify sirve entonces el HTML del otro idioma **en la misma URL**.
+3. Al cargar cualquier página, el script sincroniza la cookie con el idioma que se está viendo. Así, si alguien entra directo a `/en/` desde un enlace compartido o desde Google, la home le seguirá saliendo en inglés.
+
+**Las reglas deben ir antes que la genérica `/*`** del bloque de 404: gana la primera que coincide.
+
+`/en/` sigue existiendo, siendo indexable y funcionando al compartirla — es lo que mantiene el SEO del inglés. La contrapartida es que esa URL puede aparecer en resultados de búsqueda; ocultarla del todo implicaría renunciar a que el inglés posicione.
 
 ### Añadir o cambiar un texto de interfaz
 
@@ -163,6 +191,7 @@ Los helpers de `src/i18n/content.ts` (`localizeExperience`, `localizeProject`, `
 3. Crea `src/pages/<codigo>/index.astro` y `src/pages/<codigo>/404.astro` (copias de los ingleses, ajustando las rutas de import).
 4. Añade su bloque de traducción en el frontmatter del contenido.
 5. Añade su ruta a `HOME_PATHS` en `src/scripts/smoothScroll.js` y sus redirects en `netlify.toml`.
+6. Como las condiciones de cookie de Netlify sólo miran la presencia, un tercer idioma necesita su propia cookie (`lang_<codigo>`) y su pareja de reglas; actualiza también el script del selector, que hoy asume dos idiomas.
 
 ---
 
@@ -286,6 +315,7 @@ Configurado en `netlify.toml`:
 
 - **Build**: `npm run build` → salida en `dist/`.
 - **404**: redirect de rutas no encontradas a `/404.html` con status 404. Las rutas bajo `/en/*` van al 404 en inglés (`/en/404/index.html`); **el orden de los redirects importa**, las reglas de `/en/*` van antes que la genérica `/*`.
+- **Idioma**: rewrites condicionados por la cookie `lang_en` que sirven el inglés desde `/` sin cambiar la URL (ver [URL sin `/en/`](#url-sin-en)). Son las primeras reglas del archivo.
 - **Headers**: cabeceras de seguridad (`X-Frame-Options`, `X-Content-Type-Options`, etc.) y caché de assets, imágenes y fuentes.
 
 > **Versión de Node**: Astro 6 requiere **Node 22.12+**. `netlify.toml` declara `NODE_VERSION = "22"`.
