@@ -24,11 +24,28 @@ export function localizePath(path: string, lang: Lang): string {
   return clean === '/' ? `/${lang}/` : `/${lang}${clean}`;
 }
 
-/** Lista de idiomas con su ruta equivalente, para el selector y las etiquetas hreflang. */
+/** Lista de idiomas con su ruta equivalente, para las etiquetas hreflang. */
 export function getLanguageOptions(path: string) {
   return (Object.keys(languages) as Lang[]).map((lang) => ({
     lang,
     label: languages[lang],
     href: localizePath(path, lang),
+  }));
+}
+
+/**
+ * Opciones del selector de idioma.
+ *
+ * El `href` apunta a la página real de cada idioma, así que sin JavaScript el
+ * selector sigue funcionando (a costa de mostrar `/en/` en la URL). Con
+ * JavaScript, el propio componente intercepta el clic, guarda la preferencia en
+ * la cookie `lang_en` y recarga: Netlify sirve entonces el HTML inglés desde `/`
+ * y la barra de direcciones no cambia.
+ */
+export function getLanguageSwitchOptions() {
+  return (Object.keys(languages) as Lang[]).map((lang) => ({
+    lang,
+    label: languages[lang],
+    href: localizePath('/', lang),
   }));
 }
