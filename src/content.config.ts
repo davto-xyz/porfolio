@@ -15,6 +15,7 @@ const projectsCollection = defineCollection({
     isMainProject: z.boolean().optional(),
     url: z.string().optional(),
     features: z.array(z.string()).optional(),
+    featured: z.boolean().optional(),
     order: z.number().optional(),
   }),
 });

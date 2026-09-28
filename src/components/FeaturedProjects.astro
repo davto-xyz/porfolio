@@ -1,0 +1,117 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Title from './Title.astro';
+
+const featuredProjects = (await getCollection('projects', ({ data }) => data.featured))
+  .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+// Capturas de cada proyecto en src/assets/images/projects/<name>/, ordenadas por nombre de archivo
+const screenshotModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/images/projects/*/*.{png,jpg,jpeg,webp}',
+  { eager: true }
+);
+
+const getScreenshots = (name: string) =>
+  Object.entries(screenshotModules)
+    .filter(([path]) => path.includes(`/projects/${name}/`))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, mod]) => mod.default);
+---
+
+{featuredProjects.length > 0 && (
+  <section id="featured" class="py-12 md:py-20 flex items-center">
+    <div class="w-full">
+
+      <div class="text-center mb-10 md:mb-16">
+        <div class="w-full flex justify-center">
+          <Title title="Destacados" />
+        </div>
+        <p class="text-base md:text-xl mt-4 md:mt-6 w-full leading-relaxed text-gray-800 font-stretch-expanded tracking-tighter px-2">
+          Productos propios, de la idea a la tienda de aplicaciones
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-6 md:gap-8">
+        {featuredProjects.map((project) => {
+          const screenshots = getScreenshots(project.data.name);
+          return (
+            <article class="bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full border-2 border-gray-950">
+              <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 pointer-events-none"></div>
+
+              <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 p-5 md:p-8 lg:p-10">
+                <div class="flex flex-col gap-4">
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <h3 class="font-stretch-ultra-expanded font-black text-3xl md:text-4xl 2xl:text-5xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
+                      {project.data.title}
+                    </h3>
+                    <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm border-2 border-gray-850 tracking-tighter w-fit">
+                      {project.data.tag}
+                    </span>
+                  </div>
+
+                  <p class="text-gray-800 text-base leading-relaxed">
+                    {project.data.description}
+                  </p>
+
+                  {project.data.features && (
+                    <ul class="text-gray-900 space-y-2">
+                      {project.data.features.map((feature) => (
+                        <li class="flex items-start gap-2">
+                          <span class="text-gold-500 font-bold text-xs mt-1.5">•</span>
+                          <p class="flex-1 text-sm md:text-base text-gray-800">{feature}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {project.data.technologies && (
+                    <div class="flex flex-wrap gap-1.5 md:gap-2 pt-2">
+                      {project.data.technologies.map((tech) => (
+                        <span class="px-2.5 md:px-3 py-1 text-gray-950 text-xs rounded-full font-medium bg-white border-2 border-gray-950">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {project.data.url && (
+                    <a
+                      href={project.data.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="mt-auto inline-flex border-2 border-gray-950 rounded-full px-4 py-2 items-center justify-center bg-gray-950 text-[#f6a60d] font-bold hover:bg-transparent hover:text-gray-950 hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter w-fit"
+                    >
+                      {project.data.url.includes('apps.apple.com') ? 'DESCARGAR EN APP STORE' : 'VER PROYECTO'}
+                      <svg class="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7l7 7-7 7"></path>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+
+                {screenshots.length > 0 && (
+                  <div class="flex items-center justify-center gap-3 md:gap-5">
+                    {screenshots.slice(0, 3).map((shot, i) => (
+                      <Image
+                        src={shot}
+                        alt={`${project.data.alt} — captura ${i + 1}`}
+                        widths={[240, 480]}
+                        sizes="(min-width: 1024px) 220px, 30vw"
+                        class:list={[
+                          'w-[30%] max-w-[220px] h-auto rounded-[1.5rem] md:rounded-[2rem] border-2 border-gray-950 shadow-xl transition-transform duration-500',
+                          i === 1 ? '-translate-y-4 md:-translate-y-6 group-hover:-translate-y-8' : 'translate-y-2 md:translate-y-4',
+                        ]}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}
