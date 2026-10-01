@@ -1,6 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import Title from './Title.astro';
+import { localizeSkill } from '../i18n/content';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 // Obtener todas las skills desde MDX
 const allSkills = await getCollection('skills');
@@ -23,7 +28,7 @@ const hardSkills = allSkills
   });
 
 const softSkillsData = allSkills.find(category => category.data.category === 'softskills');
-const softSkills = softSkillsData?.data.skills || [];
+const softSkills = (softSkillsData?.data.skills || []).map(skill => localizeSkill(skill, lang));
 ---
 
 <section class="bg-[#E3E2DC] py-20 min-h-screen flex items-center" id="skills">
@@ -31,8 +36,8 @@ const softSkills = softSkillsData?.data.skills || [];
     
     <!-- Header -->
     <div class="mb-12 text-center">
-      <Title title='Habilidades'></Title>
-      <div class="text-2xl text-gray-950 font-semibold font-stretch-expanded tracking-tighter mt-6 leading-relaxed">Hard skills</div>
+      <Title title={t.skills.title}></Title>
+      <div class="text-2xl text-gray-950 font-semibold font-stretch-expanded tracking-tighter mt-6 leading-relaxed">{t.skills.hard}</div>
     </div>
 
     <!-- Skills Row -->
@@ -45,7 +50,7 @@ const softSkills = softSkillsData?.data.skills || [];
             {skill.iconType === 'url' ? (
               <img 
                 src={skill.icon} 
-                alt={`${skill.name} technology`}
+                alt={skill.name}
                 class="w-full h-full object-contain"
               />
             ) : (
@@ -65,7 +70,7 @@ const softSkills = softSkillsData?.data.skills || [];
 
     <!-- Soft Skills Section -->
     <div class="mt-16 mb-8 text-center">
-      <h3 class="text-2xl text-gray-950 font-semibold  font-stretch-expanded tracking-tighter mt-6 leading-relaxed">Soft skills</h3>
+      <h3 class="text-2xl text-gray-950 font-semibold  font-stretch-expanded tracking-tighter mt-6 leading-relaxed">{t.skills.soft}</h3>
     </div>
 
     <!-- Soft Skills Row -->

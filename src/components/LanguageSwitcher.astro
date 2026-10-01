@@ -1,0 +1,103 @@
+---
+import { getLangFromUrl, getLanguageSwitchOptions, useTranslations } from '../i18n/utils';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// Los enlaces apuntan a la página real de cada idioma (fallback sin JS); el
+// script de abajo los intercepta para cambiar de idioma sin salir de `/`
+const options = getLanguageSwitchOptions();
+
+// La altura la iguala el `items-stretch` del contenedor de la navbar: el
+// selector se estira hasta la altura del botón de CV. El `min-h` sólo entra en
+// juego en pantallas muy estrechas, donde ambos botones caen en filas distintas
+// y el stretch ya no los relaciona; 70px = los `py-4` + icono `h-8` + `border-3`
+// del botón de CV.
+---
+
+<div
+  class={`flex items-stretch min-h-[70px] rounded-full border-3 border-gray-950 p-0.5 sm:p-1 gap-0.5 sm:gap-1 ${className}`}
+  role="group"
+  aria-label={t.nav.langLabel}
+  data-language-switcher
+>
+  {options.map((option) => (
+    <a
+      href={option.href}
+      data-lang={option.lang}
+      hreflang={option.lang}
+      lang={option.lang}
+      title={option.label}
+      aria-current={option.lang === lang ? 'page' : undefined}
+      class={`
+        flex items-center rounded-full px-2.5 text-sm sm:px-3 sm:text-base font-bold uppercase tracking-tighter font-stretch-ultra-expanded transition-all duration-300
+        ${option.lang === lang
+          ? 'bg-gold-500 text-gray-950'
+          : 'text-gray-950 hover:text-gold-500 hover:scale-105'
+        }
+      `}
+    >
+      {t.nav.langShort[option.lang]}
+    </a>
+  ))}
+</div>
+
+<script>
+  // Cambia de idioma sin que `/en/` aparezca en la URL.
+  //
+  // La preferencia se guarda en la cookie `lang_en` (presente = inglés) y se
+  // recarga la página: los rewrites de `netlify.toml` sirven entonces el HTML
+  // inglés desde `/`. Si esto no se ejecuta, el enlace navega a `/en/` y el
+  // sitio sigue funcionando: sólo se ve el prefijo en la barra.
+  const COOKIE = 'lang_en';
+  const ONE_YEAR = 60 * 60 * 24 * 365;
+
+  function setPreference(lang: string) {
+    document.cookie =
+      lang === 'en'
+        ? `${COOKIE}=1; Path=/; Max-Age=${ONE_YEAR}; SameSite=Lax`
+        : `${COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
+  }
+
+  function initLanguageSwitcher() {
+    // Si alguien entra directo a `/en/` (enlace compartido o resultado de
+    // Google), dejamos la cookie acorde para que la home siga en su idioma
+    setPreference(document.documentElement.lang === 'en' ? 'en' : 'es');
+
+    const links = document.querySelectorAll<HTMLAnchorElement>(
+      '[data-language-switcher] a[data-lang]'
+    );
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const lang = link.dataset.lang;
+        if (!lang) return;
+
+        event.preventDefault();
+        setPreference(lang);
+
+        // Ya estamos en la home sin prefijo: basta con recargar para que el
+        // servidor devuelva el otro idioma en la misma URL
+        if (window.location.pathname === '/') {
+          window.location.reload();
+        } else {
+          window.location.href = '/';
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLanguageSwitcher);
+  } else {
+    initLanguageSwitcher();
+  }
+
+  document.addEventListener('astro:page-load', initLanguageSwitcher);
+</script>

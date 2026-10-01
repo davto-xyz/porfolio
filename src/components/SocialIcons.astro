@@ -1,10 +1,15 @@
 ---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
 interface Props {
   class?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
   layout?: 'horizontal' | 'vertical';
   align?: 'center';
 }
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const { 
   class: className = '', 
@@ -74,7 +79,7 @@ const socialLinks = [
         target="_blank"
         rel="noopener noreferrer"
         class={`animate-icon group flex items-center justify-center ${paddingClasses[size]} text-black rounded-full bg-transparent hover:bg-gold-500 hover:text-amber-500 transition-all duration-300 shadow-lg hover:shadow-xl`}
-        aria-label={`Visit ${social.name}`}
+        aria-label={`${t.social.visit} ${social.name}`}
         title={social.name}
       >
         <div class={`${sizeClasses[size]} flex items-center justify-center`}>

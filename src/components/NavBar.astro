@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Logo from '../assets/images/logo.png';
-import CV from '../../public/CV-DavidTorres.pdf';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n/utils';
 
 export interface Props {
   links?: Array<{
@@ -12,16 +13,20 @@ export interface Props {
   }>;
 }
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const homePath = localizePath('/', lang);
 const currentPath = Astro.url.pathname;
-const isHomePage = currentPath === '/';
+const isHomePage = currentPath === homePath || currentPath === homePath.replace(/\/$/, '');
 
 const { 
   links = [
-    { href: "#projects", text: "PROYECTOS" },
-    { href: "#experience", text: "EXPERIENCIA" },
-    { href: "#skills", text: "HABILIDADES" },
-    { href: "#about", text: "SOBRE MÍ" },
-    { href: "#contact", text:"CONTACTO"}
+    { href: "#projects", text: t.nav.projects },
+    { href: "#experience", text: t.nav.experience },
+    { href: "#skills", text: t.nav.skills },
+    { href: "#about", text: t.nav.about },
+    { href: "#contact", text: t.nav.contact }
   ]
 } = Astro.props;
 
@@ -32,17 +37,19 @@ const {
   <div class="flex items-center justify-between w-full max-w-full">
     <!-- Logo -->
     <div class="navbar-animate flex-shrink-0 overflow-hidden rounded-full border-3 border-gray-900 hover:scale-105 transition-transform duration-300">
-      <a href="/">
+      <a href={homePath}>
         <Image alt="David Torres Logo" src={Logo} class="w-16 sm:w-20" />
       </a>
     </div>
     
-    <!-- Download CV Button on the right -->
-    <div class="navbar-animate">
+    <!-- Language switcher + Download CV Button on the right -->
+    <div class="navbar-animate flex flex-wrap items-stretch justify-end gap-2 sm:gap-3">
+      <LanguageSwitcher />
       <a 
-        href={CV}
+        href={t.nav.cvHref}
         class='hover:bg-transparent text-gray-950 font-bold rounded-full border-3 border-gray-950 py-4 px-4 text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2'
-        title="Descargar CV"
+        title={t.nav.cv}
+        aria-label={t.nav.cv}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8"><path fill="currentColor" d="M4 4a2 2 0 0 1 2-2h8a1 1 0 0 1 .707.293l5 5A1 1 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm13.586 4L14 4.414V8zM12 4H6v16h12V10h-5a1 1 0 0 1-1-1zm0 7.5a1 1 0 0 1 1 1v2.586l.293-.293a1 1 0 0 1 1.414 1.414l-2 2a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414l.293.293V12.5a1 1 0 0 1 1-1"/></svg>
         

@@ -2,66 +2,52 @@
 import Title from "./Title.astro"
 import Photo from "../assets/images/Sujeto.png"
 import { Image } from "astro:assets"
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 // Component About Me simplificado
 ---
 
 <section id="about" class="flex font-sans font-inter items-center justify-center min-h-screen text-center md:text-justify py-20">
-  
-    
-  <div class="flex flex-col items-center justify-center w-full max-w-7xl mx-auto">
-      
 
-    
+
+  <div class="flex flex-col items-center justify-center w-full max-w-7xl mx-auto">
+
+
+
     <!-- Title -->
     <div class="flex items-center gap-4 text-entrance-bottom delay-100 justify-center text-center mb-12" data-speed="0.7">
-     <Title title="Sobre mí"></Title>
+     <Title title={t.about.title}></Title>
     </div>
     <div class="flex items-center justify-center flex-col 2xl:flex-row gap-8 2xl:gap-16">
 
-    
+
     <div class="w-full 2xl:w-1/2 flex justify-center">
       <div class="overflow-hidden">
-        <Image alt="David Torres" src={Photo} class="w-80 h-80 2xl:w-96 2xl:h-96 rounded-full object-cover border-3 border-gray-950"/>
+        <Image alt={t.about.imageAlt} src={Photo} class="w-80 h-80 2xl:w-96 2xl:h-96 rounded-full object-cover border-3 border-gray-950"/>
       </div>
     </div>
   <!-- Right Column - About Text -->
       <div class="flex-1">
-        
-        
+
+
         <div class="space-y-3 text-gray-800   tracking-normal text-justify break-words">
           <p class="text-2xl font-bold text-center 2xl:text-left text-gray-900 font-stretch-expanded">
-            ¡Hola! Soy David,
+            {t.about.greeting}
           </p>
-          <p class="text-lg ">
-            Mi historia como desarrollador web empezó mucho antes de escribir mi primera
-            línea de código. Desde pequeño me gustaba mucho la informática, y esa curiosidad
-            me llevó a desmontar ordenadores para ver cómo funcionaban por dentro.
-          </p>
-          <p class="text-lg leading-relaxed">
-            Fue esa pasión la que me hizo plantearme estudiar más a fondo el mundo de la
-            tecnología, hasta que decidí cursar ASIR (Administración de Sistemas Informáticos
-            en Red). Durante esos estudios fue cuando el mundo de la programación realmente
-            empezó a captar mi atención de forma seria.
-          </p>
-          <p class="text-lg leading-relaxed">
-            La combinación entre mi curiosidad natural por entender cómo funcionan las cosas
-            y los conocimientos que adquirí en sistemas y redes me llevó naturalmente hacia
-            la programación. Era la evolución lógica de todo lo que había estado explorando
-            desde niño.
-          </p>
-          <p class="text-lg leading-relaxed">
-            Cuando no estoy programando, disfruto de actividades que me ayudan a desconectar
-            y mantener el equilibrio. Me gusta pasar tiempo al aire libre, ya sea caminando o
-            simplemente disfrutando de la naturaleza. También dedico tiempo a leer, tanto
-            sobre tecnología como otros temas que amplían mi perspectiva.
-          </p>
-          
-         
+          {t.about.paragraphs.map((paragraph) => (
+            <p class="text-lg leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+
+
         </div>
-        
-        
+
+
     </div>
     </div>
+  </div>
 </section>

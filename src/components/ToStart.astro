@@ -1,5 +1,9 @@
 ---
 // ToStart.astro - Botón para ir al inicio de la página
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!-- Botón flotante para ir arriba -->
@@ -7,7 +11,8 @@
   id="topbutton" 
   class="fixed bottom-6 right-6 z-50  text-black rounded-full p-3 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-110 opacity-0 invisible border-3 border-black cursor-pointer bg-[#E3E2DC]"
   style="display: none;"
-  title="Ir al inicio"
+  title={t.toStart.title}
+  aria-label={t.toStart.title}
 >
   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
