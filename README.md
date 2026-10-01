@@ -53,11 +53,13 @@ Este repositorio contiene el código fuente del portfolio personal. Es un sitio 
 ```text
 .
 ├── astro.config.mjs          # Configuración de Astro (i18n, integraciones + Tailwind/PostCSS)
+├── scripts/
+│   └── generate-cv.py        # Genera los PDF del CV en español e inglés
 ├── netlify.toml              # Configuración de build, redirects y headers de Netlify
 ├── tailwind.config.js        # Fuentes, font-stretch y color gold para Tailwind
 ├── tsconfig.json
 ├── public/
-│   ├── CV-DavidTorres.pdf    # CV en español, descargable desde la navbar
+│   ├── CV-DavidTorres.pdf    # CV en español (generado por scripts/generate-cv.py)
 │   ├── CV-DavidTorres-EN.pdf # CV en inglés (se sirve en la versión inglesa)
 │   ├── favicon.png
 │   └── img/                  # Imágenes estáticas (p. ej. icono de Threads)
@@ -313,7 +315,16 @@ Hay un CV por idioma, y la ruta sale del diccionario (`nav.cvHref`), así que el
 | Español | `public/CV-DavidTorres.pdf`      |
 | Inglés  | `public/CV-DavidTorres-EN.pdf`   |
 
-Para actualizar un CV basta con **sustituir el PDF conservando el nombre**. Se referencian por su ruta de `public/` (no con `import`) para que se descarguen con su nombre real y no se dupliquen en el build.
+Se referencian por su ruta de `public/` (no con `import`) para que se descarguen con su nombre real y no se dupliquen en el build.
+
+Ambos PDF los genera **`scripts/generate-cv.py`**, que tiene el contenido de los dos idiomas en un único diccionario y reproduce la maquetación del CV original (serif, nombre centrado, filetes entre secciones y cada puesto con empresa/rol a la izquierda y ubicación/fechas a la derecha):
+
+```sh
+pip install reportlab
+python3 scripts/generate-cv.py   # reescribe los dos PDF de public/
+```
+
+Editar el CV significa tocar el diccionario `CV` del script y volver a ejecutarlo, así que los dos idiomas no se desincronizan. Si prefieres mantener el CV en Word, también vale: exporta el PDF con el mismo nombre, déjalo en `public/` y borra el script — la web sólo sirve el archivo.
 
 Los datos de contacto y redes sociales están centralizados en **`src/data/contact.ts`**.
 
