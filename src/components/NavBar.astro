@@ -17,10 +17,8 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const homePath = localizePath('/', lang);
-const currentPath = Astro.url.pathname;
-const isHomePage = currentPath === homePath || currentPath === homePath.replace(/\/$/, '');
 
-const { 
+const {
   links = [
     { href: "#projects", text: t.nav.projects },
     { href: "#experience", text: t.nav.experience },
@@ -33,51 +31,48 @@ const {
 ---
 
 <!-- Unified Navigation Bar -->
-<nav class="navbar-animate w-full max-w-full overflow-hidden bg-transparent backdrop-blur-md pt-5 py-2 sm:py-4 px-4 sm:px-8" id="navbar">
+<nav class="navbar-animate w-full max-w-full overflow-hidden pt-5 py-2 sm:py-4 px-4 sm:px-8" id="navbar">
   <div class="flex items-center justify-between w-full max-w-full">
     <!-- Logo -->
-    <div class="navbar-animate flex-shrink-0 overflow-hidden rounded-full border-3 border-gray-900 hover:scale-105 transition-transform duration-300">
-      <a href={homePath}>
+    <div class="navbar-animate flex-shrink-0 overflow-hidden rounded-2xl border-3 border-ink rotate-[-2deg] shadow-[5px_5px_0_var(--gold)] hover:-translate-y-1 hover:shadow-[7px_7px_0_var(--gold)] transition-all duration-300 bg-white">
+      <a href={homePath} class="block">
         <Image alt="David Torres Logo" src={Logo} class="w-16 sm:w-20" />
       </a>
     </div>
-    
+
     <!-- Language switcher + Download CV Button on the right -->
     <div class="navbar-animate flex flex-wrap items-stretch justify-end gap-2 sm:gap-3">
       <LanguageSwitcher />
-      <a 
+      <a
         href={t.nav.cvHref}
-        class='hover:bg-transparent text-gray-950 font-bold rounded-full border-3 border-gray-950 py-4 px-4 text-lg transition-all duration-300 hover:scale-105 flex items-center gap-2'
+        class="btn btn-primary py-3! px-5! text-base"
         title={t.nav.cv}
         aria-label={t.nav.cv}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8"><path fill="currentColor" d="M4 4a2 2 0 0 1 2-2h8a1 1 0 0 1 .707.293l5 5A1 1 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm13.586 4L14 4.414V8zM12 4H6v16h12V10h-5a1 1 0 0 1-1-1zm0 7.5a1 1 0 0 1 1 1v2.586l.293-.293a1 1 0 0 1 1.414 1.414l-2 2a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414l.293.293V12.5a1 1 0 0 1 1-1"/></svg>
-        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6"><path fill="currentColor" d="M4 4a2 2 0 0 1 2-2h8a1 1 0 0 1 .707.293l5 5A1 1 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm13.586 4L14 4.414V8zM12 4H6v16h12V10h-5a1 1 0 0 1-1-1zm0 7.5a1 1 0 0 1 1 1v2.586l.293-.293a1 1 0 0 1 1.414 1.414l-2 2a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414l.293.293V12.5a1 1 0 0 1 1-1"/></svg>
+        CV
       </a>
     </div>
   </div>
 </nav>
 
 <!-- Left Sidebar Navigation (Desktop Only) -->
-<nav class="navbar-animate fixed left-4 top-1/2 transform -translate-y-1/2 z-40 hidden md:block">
-  <div class="border-3 rounded-full text-black py-5 px-1">
-    <div class="flex flex-col items-center space-y-4">
+<nav class="navbar-animate fixed left-4 top-1/2 -translate-y-1/2 z-40 hidden md:block">
+  <div class="bg-white border-3 border-ink rounded-full py-5 px-1.5 shadow-[6px_6px_0_var(--gold)]">
+    <div class="flex flex-col items-center gap-2.5">
       {links.map((link) => (
-        <a 
-          href={link.href} 
+        <a
+          href={link.href}
           class={`
-            relative uppercase text-sm font-bold font-stretch-ultra-expanded tracking-tighter transition-all duration-300 hover:scale-110 block text-center rounded-full p-3 m-0
-            ${link.active 
-              ? 'text-white bg-gold-500' 
-              : 'text-black hover:text-gold-500'
+            uppercase text-xs font-bold font-mono tracking-widest block text-center rounded-full p-3 border-2 transition-all duration-200
+            ${link.active
+              ? 'bg-gold text-ink border-ink shadow-[3px_3px_0_var(--ink-strong)]'
+              : 'text-ink border-transparent hover:bg-gold/20 hover:border-ink/30'
             }
           `}
           style="writing-mode: vertical-rl; text-orientation: mixed;"
         >
           {link.text}
-          {isHomePage && (
-            <div class={`absolute left-1/2 transform -translate-x-1/2 -bottom-1 w-0.5 h-4 hover:text-[#F6A60D] bg-gray-800 transition-all duration-300  ${link.active ? 'opacity-100' : 'opacity-0 hover:opacity-100'}`}></div>
-          )}
         </a>
       ))}
     </div>
@@ -111,4 +106,3 @@ const {
     }
   }
 </style>
-

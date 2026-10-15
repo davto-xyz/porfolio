@@ -3,6 +3,10 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Title from './Title.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const featuredProjects = (await getCollection('projects', ({ data }) => data.featured))
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
@@ -26,10 +30,10 @@ const getScreenshots = (name: string) =>
 
       <div class="text-center mb-10 md:mb-16">
         <div class="w-full flex justify-center">
-          <Title title="Destacados" />
+          <Title title={t.projects.featured} />
         </div>
-        <p class="text-base md:text-xl mt-4 md:mt-6 w-full leading-relaxed text-gray-800 font-stretch-expanded tracking-tighter px-2">
-          Productos propios, de la idea a la tienda de aplicaciones
+        <p class="text-base md:text-xl mt-4 md:mt-6 w-full leading-relaxed text-ink-soft font-semibold px-2">
+          {t.projects.featuredSubtitle}
         </p>
       </div>
 
@@ -37,39 +41,39 @@ const getScreenshots = (name: string) =>
         {featuredProjects.map((project) => {
           const screenshots = getScreenshots(project.data.name);
           return (
-            <article class="bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full border-2 border-gray-950">
-              <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 pointer-events-none"></div>
+            <article class="tile tile-cream w-full">
+              <span class="big-num">✦</span>
 
-              <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 p-5 md:p-8 lg:p-10">
+              <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
                 <div class="flex flex-col gap-4">
                   <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                    <h3 class="font-stretch-ultra-expanded font-black text-3xl md:text-4xl 2xl:text-5xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
+                    <h3 class="font-display font-extrabold tracking-tight leading-tight text-3xl md:text-4xl 2xl:text-5xl text-ink">
                       {project.data.title}
                     </h3>
-                    <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm border-2 border-gray-850 tracking-tighter w-fit">
+                    <span class="chip chip-gold flex-shrink-0 w-fit">
                       {project.data.tag}
                     </span>
                   </div>
 
-                  <p class="text-gray-800 text-base leading-relaxed">
+                  <p class="text-ink-soft text-base leading-relaxed font-semibold">
                     {project.data.description}
                   </p>
 
                   {project.data.features && (
-                    <ul class="text-gray-900 space-y-2">
+                    <ul class="text-ink space-y-2">
                       {project.data.features.map((feature) => (
                         <li class="flex items-start gap-2">
-                          <span class="text-gold-500 font-bold text-xs mt-1.5">•</span>
-                          <p class="flex-1 text-sm md:text-base text-gray-800">{feature}</p>
+                          <span class="text-gold-ink font-bold text-xs mt-1.5">●</span>
+                          <p class="flex-1 text-sm md:text-base font-semibold">{feature}</p>
                         </li>
                       ))}
                     </ul>
                   )}
 
                   {project.data.technologies && (
-                    <div class="flex flex-wrap gap-1.5 md:gap-2 pt-2">
+                    <div class="flex flex-wrap gap-2 pt-2">
                       {project.data.technologies.map((tech) => (
-                        <span class="px-2.5 md:px-3 py-1 text-gray-950 text-xs rounded-full font-medium bg-white border-2 border-gray-950">
+                        <span class="chip">
                           {tech}
                         </span>
                       ))}
@@ -81,11 +85,11 @@ const getScreenshots = (name: string) =>
                       href={project.data.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="mt-auto inline-flex border-2 border-gray-950 rounded-full px-4 py-2 items-center justify-center bg-gray-950 text-[#f6a60d] font-bold hover:bg-transparent hover:text-gray-950 hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter w-fit"
+                      class="mt-auto mini-btn group/link w-fit"
                     >
-                      {project.data.url.includes('apps.apple.com') ? 'DESCARGAR EN APP STORE' : 'VER PROYECTO'}
-                      <svg class="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7l7 7-7 7"></path>
+                      {project.data.url.includes('apps.apple.com') ? t.projects.downloadAppStore : t.projects.viewProject}
+                      <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-7-7l7 7-7 7"></path>
                       </svg>
                     </a>
                   )}
@@ -100,8 +104,8 @@ const getScreenshots = (name: string) =>
                         widths={[240, 480]}
                         sizes="(min-width: 1024px) 220px, 30vw"
                         class:list={[
-                          'w-[30%] max-w-[220px] h-auto rounded-[1.5rem] md:rounded-[2rem] border-2 border-gray-950 shadow-xl transition-transform duration-500',
-                          i === 1 ? '-translate-y-4 md:-translate-y-6 group-hover:-translate-y-8' : 'translate-y-2 md:translate-y-4',
+                          'w-[30%] max-w-[220px] h-auto rounded-[1.5rem] md:rounded-[2rem] border-3 border-ink shadow-[6px_6px_0_var(--ink-strong)] transition-transform duration-500',
+                          i === 1 ? '-translate-y-4 md:-translate-y-6 group-hover:-translate-y-8 rotate-[1.5deg]' : 'translate-y-2 md:translate-y-4 rotate-[-1.5deg]',
                         ]}
                       />
                     ))}

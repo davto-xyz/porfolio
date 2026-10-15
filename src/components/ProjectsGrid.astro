@@ -17,6 +17,9 @@ const projects = allProjects
     return a.data.title.localeCompare(b.data.title);
   })
   .map((entry) => localizeProject(entry, lang));
+
+// Solo el primer proyecto marcado como principal recibe el tile dorado
+const featuredIndex = projects.findIndex((p) => p.isMainProject);
 ---
 
 <section id="projects" class="py-12 md:py-20 flex items-center">
@@ -26,37 +29,40 @@ const projects = allProjects
       <div class="w-full flex justify-center">
         <Title title={t.projects.title} />
       </div>
-      <p class="text-base md:text-xl mt-4 md:mt-6 w-full leading-relaxed text-gray-800 font-stretch-expanded tracking-tighter px-2">
+      <p class="text-base md:text-xl mt-4 md:mt-6 w-full leading-relaxed text-ink-soft font-semibold px-2">
         {t.projects.subtitle}
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mb-10 md:mb-16 items-stretch w-full">
-      {projects.map((project) => {
-        return (
-          <div class="experience-card bg-[#E3E2DC]/70 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden w-full hover:bg-[#ebeae4]">
-            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-2 rounded-2xl border-gray-950"></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-10 md:mb-16 items-stretch w-full">
+      {projects.map((project, index) => {
+        const isFeatured = index === featuredIndex;
+        const rotClass = index % 2 === 0 ? 'tile-rot-a' : 'tile-rot-b';
 
-            <div class="p-4 md:p-6 relative z-10 flex flex-col space-y-3 h-full">
+        return (
+          <div class={`tile group w-full ${isFeatured ? 'tile-feat' : rotClass}`}>
+            <span class="big-num">{String(index + 1).padStart(2, '0')}</span>
+
+            <div class="relative z-10 flex flex-col space-y-3 h-full">
               <div class="flex-shrink-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-                <h3 class="font-stretch-ultra-expanded font-black text-lg md:text-xl 2xl:text-2xl text-gray-950 group-hover:text-gold-500 transition-colors duration-300">
+                <h3 class={`font-display font-extrabold tracking-tight text-xl md:text-2xl ${isFeatured ? 'text-[#1c1300] text-3xl md:text-4xl leading-tight' : 'text-ink'}`}>
                   {project.title}
                 </h3>
-                <span class="px-3 py-1 bg-gold-500 text-gray-950 text-xs font-bold uppercase rounded-full shadow-sm hover:bg-gold-600 transition-colors duration-200 border-2 border-gray-850 tracking-tighter flex-shrink-0 w-fit">
+                <span class="chip flex-shrink-0 w-fit">
                   {project.tag}
                 </span>
               </div>
 
               <div class="flex-grow">
-                <p class="text-gray-800 text-sm leading-relaxed">
+                <p class={`text-sm leading-relaxed font-semibold ${isFeatured ? 'text-[#1c1300]' : 'text-ink-soft'}`}>
                   {project.description}
                 </p>
                 {project.features && (
-                  <ul class="text-gray-900 text-sm space-y-1.5 mt-3">
+                  <ul class={`text-sm space-y-1.5 mt-3 ${isFeatured ? 'text-[#1c1300]' : 'text-ink'}`}>
                     {project.features.map((feature) => (
                       <li class="flex items-start gap-2">
-                        <span class="text-gold-500 font-bold text-xs mt-1">•</span>
-                        <p class="flex-1 text-sm text-gray-800">{feature}</p>
+                        <span class={`font-bold text-xs mt-1 ${isFeatured ? 'text-white' : 'text-gold-ink'}`}>●</span>
+                        <p class="flex-1 text-sm font-semibold">{feature}</p>
                       </li>
                     ))}
                   </ul>
@@ -65,9 +71,9 @@ const projects = allProjects
 
               <div class="flex-shrink-0 pt-3 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
                 {project.technologies && (
-                  <div class="flex flex-wrap gap-1.5 md:gap-2">
+                  <div class="flex flex-wrap gap-2">
                     {project.technologies.map((tech) => (
-                      <span class="px-2.5 md:px-3 py-1 text-gray-950 text-xs rounded-full font-medium bg-white hover:text-grey-950 transition-colors duration-200 border-2 border-gray-950">
+                      <span class="chip">
                         {tech}
                       </span>
                     ))}
@@ -79,11 +85,11 @@ const projects = allProjects
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex border-2 border-gray-950 rounded-full px-3 py-1 items-center justify-center text-gray-950 font-bold hover:bg-gray-950 hover:text-[#f6a60d] hover:scale-105 transition-all duration-300 text-sm group/link tracking-tighter flex-shrink-0 w-fit"
+                    class="mini-btn group/link"
                   >
                     {t.projects.viewProject}
-                    <svg class="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7l7 7-7 7"></path>
+                    <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-7-7l7 7-7 7"></path>
                     </svg>
                   </a>
                 )}
@@ -95,3 +101,8 @@ const projects = allProjects
     </div>
   </div>
 </section>
+
+<script>
+  import { makeTilt } from '../scripts/tilt.js';
+  makeTilt('#projects .tile', 5);
+</script>

@@ -7,15 +7,15 @@ const t = useTranslations(lang);
 ---
 
 <!-- Botón flotante para ir arriba -->
-<button 
-  id="topbutton" 
-  class="fixed bottom-6 right-6 z-50  text-black rounded-full p-3 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-110 opacity-0 invisible border-3 border-black cursor-pointer bg-[#E3E2DC]"
+<button
+  id="topbutton"
+  class="fixed bottom-6 right-6 z-50 text-ink rounded-2xl p-3 bg-white opacity-0 invisible border-3 border-ink cursor-pointer shadow-[5px_5px_0_var(--gold)]"
   style="display: none;"
   title={t.toStart.title}
   aria-label={t.toStart.title}
 >
   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
   </svg>
 </button>
 
@@ -74,10 +74,10 @@ const t = useTranslations(lang);
     animation: fadeOutDown 0.1s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
   }
   
-  /* Efecto de pulso sutil al hacer hover */
+  /* Hover: lift neobrutalista */
   #topbutton:hover {
-    transform: translateY(0) scale(1.1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(0) scale(1.05);
+    box-shadow: 7px 7px 0 var(--gold);
   }
   
   /* Para dispositivos móviles, hacer el botón un poco más grande */

@@ -7,110 +7,122 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<footer class="bg-white text-white py-12 px-2 lg:px-8 border-3 border-gray-950 rounded-2xl mb-2">
-  <div class="container mx-auto px-3 h-full">
-    
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-16 items-end ">
-      <!-- Left Column: CTA, Email Button, and Location -->
-      <div class="text-center lg:text-left">
-        <!-- Call to Action -->
-        <div class="mb-6">
-          <p class="text-lg lg:text-xl  font-black text-gray-950 group-hover:text-gold-500 transition-colors duration-300 mb-1 font-stretch-ultra-expanded uppercase">
-            {t.footer.cta}
-          </p>
-          
-        </div>
+<footer class="bg-paper-2 border-3 border-ink rounded-[26px] p-8 md:p-12 mb-2 shadow-[8px_8px_0_var(--gold)] overflow-hidden">
+  <div class="h-full">
 
-        <!-- Email with Copy Button -->
-         <div class="flex flex-wrap items-center mb-6 lg:items-center justify-center lg:justify-start">
-
-           <div class=" flex flex-wrap items-center justify-between   border-3 w-fit  border-gray-950 rounded-2xl">
-             <p 
-             
-             class="inline-flex items-center px-6 pr-3 font-base text-lg text-gray-950 font-stretch-125%"
-             >
-             {contactData.email}  
-           </p>
-            
-            <button 
-            id="copyEmailBtn"
-            class="py-3 pr-6 hover:cursor-pointer"
-            data-email={contactData.email}  
-            title={t.footer.copyEmail}
-            aria-label={t.footer.copyEmail}
-            >
-            <svg id="copyIcon" class="w-5 h-5 text-gray-950 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-            </svg>
-            <svg id="checkIcon" class="w-5 h-5 text-gray-950 hidden transition-all duration-300 transform opacity-0 scale-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-        
-      </div>
-
-      <!-- Right Column: Social Icons and Copyright -->
-      <div class="text-center lg:text-right space-y-6 items-end justify-end">
-        
-        <!-- Social Media -->
-        <div class="mb-4">
-          <SocialIcons 
-            size="lg" 
-            class="!text-gray-400 hover:!text-gold-500 justify-center lg:justify-end" 
-          />
-        </div>
-
-        
-      </div>
+    <!-- Palabra gigante con stroke -->
+    <div class="foot-word" aria-hidden="true">
+      DAVID&nbsp;TORRES<span class="foot-dot">.</span>
     </div>
-    <div>
-      <!-- Location -->
-        <p class=" text-sm font-medium font-base  text-gray-950 font-stretch-125% text-center lg:text-right">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end mt-10">
+
+      <!-- Left Column: CTA + Email con botón copiar -->
+      <div class="text-center lg:text-left">
+        <p class="font-mono text-xs font-bold uppercase tracking-widest text-ink-soft mb-5">
+          {t.footer.cta}
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center lg:justify-start">
+          <div class="flex flex-wrap items-center justify-between bg-white border-3 border-ink rounded-2xl w-fit shadow-[5px_5px_0_var(--ink-strong)]">
+            <p class="inline-flex items-center px-6 pr-3 font-mono font-bold text-base text-ink py-3">
+              {contactData.email}
+            </p>
+
+            <button
+              id="copyEmailBtn"
+              class="py-3 pr-6 hover:cursor-pointer"
+              data-email={contactData.email}
+              title={t.footer.copyEmail}
+              aria-label={t.footer.copyEmail}
+            >
+              <svg id="copyIcon" class="w-5 h-5 text-ink transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+              </svg>
+              <svg id="checkIcon" class="w-5 h-5 text-gold-ink hidden transition-all duration-300 transform opacity-0 scale-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Social + Copyright -->
+      <div class="text-center lg:text-right space-y-5 items-end justify-end">
+        <div>
+          <SocialIcons size="md" class="justify-center lg:justify-end" />
+        </div>
+        <p class="font-mono text-xs font-bold uppercase tracking-widest text-ink-soft">
           {t.footer.madeIn}
         </p>
+      </div>
     </div>
-    
+
   </div>
 </footer>
+
+<style>
+  .foot-word {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(40px, 7.5vw, 130px);
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 2.5px var(--ink-strong);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .foot-dot {
+    color: var(--gold);
+    -webkit-text-stroke: 2.5px var(--ink-strong);
+  }
+
+  @media (max-width: 640px) {
+    .foot-word {
+      white-space: normal;
+      word-break: break-word;
+      -webkit-text-stroke: 2px var(--ink-strong);
+    }
+  }
+</style>
 
 <script>
   function initCopyEmail() {
     const copyBtn = document.getElementById('copyEmailBtn');
     const copyIcon = document.getElementById('copyIcon');
     const checkIcon = document.getElementById('checkIcon');
-    
+
     if (copyBtn && copyIcon && checkIcon) {
       copyBtn.addEventListener('click', async () => {
         const email = copyBtn.getAttribute('data-email');
-        
+
         try {
           await navigator.clipboard.writeText(email);
-          
+
           // Smooth transition from copy icon to check icon
           copyIcon.classList.add('opacity-0', 'scale-75');
-          
+
           setTimeout(() => {
             copyIcon.classList.add('hidden');
             checkIcon.classList.remove('hidden');
             checkIcon.classList.remove('opacity-0', 'scale-75');
             checkIcon.classList.add('opacity-100', 'scale-100');
           }, 150);
-          
+
           setTimeout(() => {
             // Smooth transition back to copy icon
             checkIcon.classList.add('opacity-0', 'scale-75');
             checkIcon.classList.remove('opacity-100', 'scale-100');
-            
+
             setTimeout(() => {
               checkIcon.classList.add('hidden');
               copyIcon.classList.remove('hidden');
               copyIcon.classList.remove('opacity-0', 'scale-75');
               copyIcon.classList.add('opacity-100', 'scale-100');
             }, 150);
-            
+
           }, 2000);
         } catch (err) {
           console.error('Error copying to clipboard:', err);

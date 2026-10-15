@@ -32,16 +32,21 @@ const es = {
   },
   hero: {
     greeting: '¡Hola!, soy David',
+    available: 'Disponible para nuevos proyectos',
     roles: ['Full-stack Developer', 'Data Analyst'],
     description:
       'Me apasiona crear soluciones digitales que realmente importen. Transformo ideas en productos web que conectan con los usuarios y generan resultados reales.',
     imageAlt: 'David Torres - Portfolio',
+    location: 'Murcia, España',
   },
   projects: {
     title: 'Proyectos',
     subtitle:
       'Soluciones digitales reales, diseñadas y desarrolladas con tecnologías modernas',
     viewProject: 'VER PROYECTO',
+    featured: 'Destacados',
+    featuredSubtitle: 'Productos propios, de la idea a la tienda de aplicaciones',
+    downloadAppStore: 'DESCARGAR EN APP STORE',
   },
   experience: {
     title: 'Experiencia',
@@ -52,6 +57,9 @@ const es = {
     title: 'Habilidades',
     hard: 'Hard skills',
     soft: 'Soft skills',
+    ctaTitle: '¿Tu proyecto encaja con estas skills?',
+    ctaHighlight: 'Mejor.',
+    cta: 'Cuéntamelo',
   },
   about: {
     title: 'Sobre mí',
@@ -63,11 +71,14 @@ const es = {
       'Cuando no estoy programando, disfruto de actividades que me ayudan a desconectar y mantener el equilibrio. Me gusta pasar tiempo al aire libre, ya sea caminando o simplemente disfrutando de la naturaleza. También dedico tiempo a leer, tanto sobre tecnología como otros temas que amplían mi perspectiva.',
     ],
     imageAlt: 'David Torres',
+    chip: 'Pixel a pixel',
   },
   contact: {
     title: 'Contacto',
     subtitle:
       'Tanto si tienes un proyecto interesante, una oportunidad laboral, o simplemente quieres conectar, me encantaría escucharte.',
+    eyebrow: 'Hablemos',
+    headline: 'Dale vida a tu proyecto.',
     email: {
       title: 'Email',
       description: 'La forma más directa',
@@ -117,15 +128,20 @@ const en: typeof es = {
   },
   hero: {
     greeting: "Hi! I'm David",
+    available: 'Available for new projects',
     roles: ['Full-stack Developer', 'Data Analyst'],
     description:
       'I love building digital solutions that really matter. I turn ideas into web products that connect with users and deliver real results.',
     imageAlt: 'David Torres - Portfolio',
+    location: 'Murcia, Spain',
   },
   projects: {
     title: 'Projects',
     subtitle: 'Real digital solutions, designed and built with modern technologies',
     viewProject: 'VIEW PROJECT',
+    featured: 'Featured',
+    featuredSubtitle: 'My own products, from idea to app store',
+    downloadAppStore: 'DOWNLOAD ON THE APP STORE',
   },
   experience: {
     title: 'Experience',
@@ -136,6 +152,9 @@ const en: typeof es = {
     title: 'Skills',
     hard: 'Hard skills',
     soft: 'Soft skills',
+    ctaTitle: 'Does your project fit these skills?',
+    ctaHighlight: 'Even better.',
+    cta: 'Tell me about it',
   },
   about: {
     title: 'About me',
@@ -147,11 +166,14 @@ const en: typeof es = {
       "When I'm not coding, I enjoy things that help me switch off and keep my balance. I like being outdoors, whether walking or simply enjoying nature. I also make time to read, both about technology and about other topics that broaden my perspective.",
     ],
     imageAlt: 'David Torres',
+    chip: 'Pixel by pixel',
   },
   contact: {
     title: 'Contact',
     subtitle:
       "Whether you have an interesting project, a job opportunity, or you just want to connect, I'd love to hear from you.",
+    eyebrow: "Let's talk",
+    headline: 'Bring your project to life.',
     email: {
       title: 'Email',
       description: 'The most direct way',

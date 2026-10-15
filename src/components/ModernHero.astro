@@ -8,65 +8,126 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<section id="hero" class="bg-[#E3E2DC] overflow-visible h-screen  z-40 flex md:block  md:pt-0">
-  <div class="flex flex-col lg:flex-row items-start justify-evenly lg:justify-center  2xl:justify-center md:justify-center md:items-center h-[85dvh] lg:h-[90vh]">
-    
-    <!-- Content Left Side -->
-    <div class="w-full flex items-center justify-center lg:justify-start order-2 lg:order-1">
-      <div class="text-center lg:text-left  sm:px-0">
-        
-        <!-- Large Title -->
-        <h1 class="hero-animate text-3xl sm:text-4xl md:text-4xl font-black text-black leading-none mb-2.5 tracking-tighter font-stretch-ultra-expanded uppercase w-full" id="principal">
-          {t.hero.greeting}
-        </h1>
-        
-        <!-- Subtitle -->
-        <div class="hero-animate mb-5 break-words" data-speed="0.8">
-          <h2 class="text-center lg:text-left text-3xl sm:text-2xl md:text-3xl lg:3xl font-medium font-stretch-ultra-expanded text-black mb-2 uppercase tracking-tighter leading-none flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3">
-           <span class="inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-black bg-gold-500 font-bold text-lg sm:text-xl rounded-full border-3 border-black">{t.hero.roles[0]}</span>
-           <span class="text-black font-bold">&</span>
-           <span class="inline-flex items-center px-3 py-1 sm:px-4 sm:py-1.5 text-black bg-gold-500 font-bold text-lg sm:text-xl rounded-full border-3 border-black">{t.hero.roles[1]}</span>
-          </h2>
-        </div>
-        <div class="hero-animate mb-5 text-center lg:text-left text-base lg:text-lg text-gray-800 leading-none font-stretch-expanded tracking-normal" data-speed="0.7">
-          {t.hero.description}
-        </div>
-        
-        <!-- Social Icons -->
-        <div class="hero-animate flex items-center justify-center lg:justify-start mt-6" data-speed="0.6">
-          <SocialIcons size="lg" />
-        </div>
-         
+<section id="hero" class="relative overflow-visible pt-6 pb-12">
+  <div class="hero-band">
+    <!-- Marquesina gigante con stroke asomando por arriba -->
+    <div class="hero-stroke-marquee" aria-hidden="true">
+      <div class="hero-stroke-track">
+        <span class="display stroke">DAVID TORRES&nbsp;✦&nbsp;FULL-STACK&nbsp;✦&nbsp;DATA ANALYST&nbsp;✦&nbsp;</span>
+        <span class="display stroke">DAVID TORRES&nbsp;✦&nbsp;FULL-STACK&nbsp;✦&nbsp;DATA ANALYST&nbsp;✦&nbsp;</span>
       </div>
     </div>
 
-    <!-- Image Right Side -->
-    <div class="hero-animate relative md:h-full w-full flex items-center justify-center lg:justify-end order-1 lg:order-2 md:mb-0 mb-5" data-speed="0.8">
-      <div class="relative w-full max-w-xs sm:max-w-sm md:max-w-lg">
-        <!-- Main Image -->
-        <div class="md:w-full rounded-full border-4 border-gray-900 overflow-hidden hover:scale-105 shadow-lg hover:shadow-2xl transition-all duration-300 mx-auto w-60">
-         
-          
-          <!-- Actual Image -->
-          <Image 
-            src={heroImage} 
-            alt={t.hero.imageAlt} 
-            class="md:w-full md:h-full  object-cover hover:scale-110 transition-transform duration-500 relative z-20"
+    <div class="relative z-10 grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-14 items-center mt-12">
+      <!-- Texto -->
+      <div class="hero-animate text-center lg:text-left order-2 lg:order-1">
+        <span class="badge">
+          <span class="dotp"></span>
+          {t.hero.available}
+        </span>
+
+        <h1 class="display text-5xl sm:text-6xl xl:text-7xl text-ink mt-7 max-w-[12ch] mx-auto lg:mx-0">
+          {t.hero.greeting}
+        </h1>
+
+        <div class="hero-animate mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+          <span class="chip chip-lg rotate-[-1.5deg] shadow-[5px_5px_0_var(--ink-strong)]">{t.hero.roles[0]}</span>
+          <span class="font-display font-extrabold text-3xl text-ink">&</span>
+          <span class="chip chip-lg rotate-[1.5deg] shadow-[5px_5px_0_var(--ink-strong)]">{t.hero.roles[1]}</span>
+        </div>
+
+        <p class="hero-animate mt-7 text-lg font-semibold text-ink/75 leading-snug max-w-[42ch] mx-auto lg:mx-0">
+          {t.hero.description}
+        </p>
+
+        <div class="hero-animate flex items-center justify-center lg:justify-start mt-8">
+          <SocialIcons size="lg" />
+        </div>
+      </div>
+
+      <!-- Foto enmarcada -->
+      <div class="hero-animate relative w-full max-w-xs sm:max-w-sm mx-auto order-1 lg:order-2">
+        <div class="bg-white border-3 border-ink rounded-2xl p-3 rotate-[-2deg] shadow-[9px_9px_0_var(--ink-strong)]" data-hero-tilt>
+          <Image
+            src={heroImage}
+            alt={t.hero.imageAlt}
+            class="w-full rounded-xl border-2 border-ink object-cover"
             loading="eager"
             format="webp"
             quality={100}
           />
         </div>
-        
-        
+        <div class="hero-chip">
+          <b>✦</b> {t.hero.location}
+        </div>
       </div>
-      
     </div>
-    
   </div>
 </section>
 
 <style>
+  .hero-band {
+    background: var(--gold);
+    border: 3px solid var(--ink-strong);
+    border-radius: 36px;
+    padding: 48px 44px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-chip {
+    position: absolute;
+    left: -18px;
+    bottom: -16px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--ink-strong);
+    color: #fff;
+    border: 2.5px solid var(--ink-strong);
+    border-radius: 15px;
+    padding: 12px 16px;
+    box-shadow: 6px 6px 0 #fff, 6px 6px 0 3px var(--ink-strong);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    transform: rotate(-3deg);
+  }
+
+  .hero-chip b {
+    color: var(--gold);
+    font-size: 16px;
+  }
+
+  .hero-stroke-marquee {
+    position: absolute;
+    top: -34px;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .hero-stroke-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-left 20s linear infinite;
+  }
+
+  .hero-stroke-track span {
+    font-size: clamp(70px, 13vw, 168px);
+    white-space: nowrap;
+    opacity: 0.5;
+  }
+
+  @keyframes scroll-left {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   .hero-animate {
     opacity: 0;
     transform: translateY(30px);
@@ -92,5 +153,20 @@ const t = useTranslations(lang);
       opacity: 1;
       transform: none;
     }
+
+    .hero-stroke-track {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-band {
+      padding: 36px 24px 44px;
+    }
   }
 </style>
+
+<script>
+  import { makeTilt } from '../scripts/tilt.js';
+  makeTilt('[data-hero-tilt]', 7);
+</script>

@@ -17,12 +17,12 @@ const options = getLanguageSwitchOptions();
 // La altura la iguala el `items-stretch` del contenedor de la navbar: el
 // selector se estira hasta la altura del botón de CV. El `min-h` sólo entra en
 // juego en pantallas muy estrechas, donde ambos botones caen en filas distintas
-// y el stretch ya no los relaciona; 70px = los `py-4` + icono `h-8` + `border-3`
+// y el stretch ya no los relaciona; 54px = los `py-3` + icono `h-6` + `border-3`
 // del botón de CV.
 ---
 
 <div
-  class={`flex items-stretch min-h-[70px] rounded-full border-3 border-gray-950 p-0.5 sm:p-1 gap-0.5 sm:gap-1 ${className}`}
+  class={`flex items-stretch min-h-[54px] rounded-full border-3 border-ink bg-white p-0.5 sm:p-1 gap-0.5 sm:gap-1 shadow-[4px_4px_0_var(--gold)] ${className}`}
   role="group"
   aria-label={t.nav.langLabel}
   data-language-switcher
@@ -36,10 +36,10 @@ const options = getLanguageSwitchOptions();
       title={option.label}
       aria-current={option.lang === lang ? 'page' : undefined}
       class={`
-        flex items-center rounded-full px-2.5 text-sm sm:px-3 sm:text-base font-bold uppercase tracking-tighter font-stretch-ultra-expanded transition-all duration-300
+        flex items-center rounded-full px-2.5 text-sm sm:px-3 sm:text-base font-mono font-bold uppercase tracking-widest transition-all duration-200
         ${option.lang === lang
-          ? 'bg-gold-500 text-gray-950'
-          : 'text-gray-950 hover:text-gold-500 hover:scale-105'
+          ? 'bg-gold text-ink'
+          : 'text-ink hover:text-gold-ink'
         }
       `}
     >

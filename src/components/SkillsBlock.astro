@@ -16,9 +16,9 @@ const categoryOrder = ['frontend', 'backend', 'database', 'devops', 'tools'];
 // Separar hard skills y soft skills
 const hardSkills = allSkills
   .filter(category => category.data.category !== 'softskills')
-  .flatMap(category => 
-    category.data.skills?.map(skill => ({ 
-      ...skill, 
+  .flatMap(category =>
+    category.data.skills?.map(skill => ({
+      ...skill,
       category: category.data.category,
       categoryOrder: categoryOrder.indexOf(category.data.category)
     })) || []
@@ -31,67 +31,71 @@ const softSkillsData = allSkills.find(category => category.data.category === 'so
 const softSkills = (softSkillsData?.data.skills || []).map(skill => localizeSkill(skill, lang));
 ---
 
-<section class="bg-[#E3E2DC] py-20 min-h-screen flex items-center" id="skills">
-  <div class="w-full ">
-    
+<section class="py-20 flex items-center" id="skills">
+  <div class="w-full">
+
     <!-- Header -->
     <div class="mb-12 text-center">
       <Title title={t.skills.title}></Title>
-      <div class="text-2xl text-gray-950 font-semibold font-stretch-expanded tracking-tighter mt-6 leading-relaxed">{t.skills.hard}</div>
+      <div class="font-display font-extrabold text-2xl text-ink uppercase tracking-tight mt-8 leading-none">{t.skills.hard}</div>
     </div>
 
-    <!-- Skills Row -->
-       
-    <div class="flex flex-wrap lg:justify-center justify-center items-center gap-8 lg:gap-4 sm:gap-6 md:gap-8 lg:max-w-5xl lg:mx-auto w-full">
-    
+    <!-- Hard Skills Row -->
+    <div class="flex flex-wrap justify-center items-stretch gap-5 lg:gap-6 lg:max-w-5xl lg:mx-auto w-full">
+
       {hardSkills.map((skill) => (
-        <div class="relative flex items-center justify-center p-4 rounded-full bg-transparent border-gray-950 border-3 hover:border-gold-500 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl group">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-12 md:h-12 flex items-center justify-center">
+        <div class="relative flex items-center justify-center p-4 rounded-2xl bg-white border-3 border-ink shadow-[5px_5px_0_var(--ink-strong)] hover:-translate-y-1 hover:shadow-[7px_7px_0_var(--gold)] transition-all duration-200 group">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
             {skill.iconType === 'url' ? (
-              <img 
-                src={skill.icon} 
+              <img
+                src={skill.icon}
                 alt={skill.name}
                 class="w-full h-full object-contain"
               />
             ) : (
-              <span class="text-2xl sm:text-3xl md:text-4xl">{skill.icon}</span>
+              <span class="text-2xl sm:text-3xl">{skill.icon}</span>
             )}
           </div>
-          
+
           <!-- Custom Tooltip -->
-          <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-10">
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1.5 bg-ink text-white font-mono text-xs font-bold rounded-lg border-2 border-gold shadow-[3px_3px_0_var(--gold)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
             {skill.name}
-            <!-- Arrow -->
-            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+            <div class="absolute top-full left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-4 border-transparent border-t-ink"></div>
           </div>
         </div>
       ))}
     </div>
 
     <!-- Soft Skills Section -->
-    <div class="mt-16 mb-8 text-center">
-      <h3 class="text-2xl text-gray-950 font-semibold  font-stretch-expanded tracking-tighter mt-6 leading-relaxed">{t.skills.soft}</h3>
+    <div class="mt-20 mb-10 text-center">
+      <h3 class="font-display font-extrabold text-2xl text-ink uppercase tracking-tight leading-none">{t.skills.soft}</h3>
     </div>
 
     <!-- Soft Skills Row -->
-    <div class="flex flex-wrap justify-center items-center gap-8 sm:gap-6 md:gap-8 max-w-5xl mx-auto mb-12">
+    <div class="flex flex-wrap justify-center items-stretch gap-5 max-w-5xl mx-auto mb-16">
       {softSkills.map((skill) => (
-        <div class="relative flex flex-col items-center justify-center py-4 rounded-full bg-transparent border-gray-950 border-3 hover:border-gold-500 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl group lg:w-48 lg:h-24 w-full h-full">
-          <div class="w-12 h-12 mb-1 flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" set:html={skill.icon}>
+        <div class="relative flex flex-col items-center justify-center py-5 px-4 rounded-2xl bg-white border-3 border-ink shadow-[5px_5px_0_var(--ink-strong)] hover:-translate-y-1 hover:shadow-[7px_7px_0_var(--gold)] transition-all duration-200 group lg:w-44 w-full sm:w-[calc(50%-0.75rem)]">
+          <div class="w-11 h-11 mb-2 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11" set:html={skill.icon}>
               </svg>
           </div>
-          <span class="lg:text-xs text-base font-normal font-stretch-expanded text-center px-5">{skill.name}</span>
+          <span class="font-mono text-xs font-bold text-ink text-center px-2 uppercase tracking-wide">{skill.name}</span>
         </div>
       ))}
     </div>
 
     <!-- CTA Section -->
-    <div class="bg-[#E3E2DC]/70 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 group relative overflow-hidden hover:bg-[#ebeae4] max-w-4xl mx-auto">
-      <!-- Background Gradient -->
-      <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-gold-500/5 group-hover:to-gold-500/10 transition-all duration-300 border-3 rounded-3xl border-gray-950"></div>
-      
-      
-
+    <div class="tile tile-dark max-w-4xl mx-auto flex-row items-center justify-between gap-6 flex-wrap rotate-[0.6deg] hover:rotate-[0.6deg]">
+      <span class="big-num">✦</span>
+      <h3 class="font-display font-extrabold text-2xl md:text-3xl text-white tracking-tight leading-tight relative z-10">
+        {t.skills.ctaTitle} <span class="text-gold">{t.skills.ctaHighlight}</span>
+      </h3>
+      <a href="#contact" class="mini-btn mini-btn-gold relative z-10">
+        {t.skills.cta}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-7-7l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
   </div>
 </section>

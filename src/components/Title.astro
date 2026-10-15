@@ -3,11 +3,11 @@ export interface Props {
   title: string;
 }
 const {
-    title = "" 
+    title = ""
 }= Astro.props
 ---
-<div class="w-full flex justify-center mb-5">
-  <div class=" border-3 border-gray-900 py-2 px-8 2xl:py-3 rounded-full w-fit">
-    <h2 class="text-2xl 2xl:text-5xl font-stretch-ultra-expanded tracking-tighter font-black mb-2 text-black uppercase break-all">{title}<span class="text-gold-500 text-4xl sm:6xl md:6xl lg:6xl 2xl:text-6xl h-2 pl-[1px]">.</span></h2>
+<div class="w-full flex justify-center mb-8">
+  <div class="bg-ink rounded-2xl py-3 px-8 w-fit rotate-[-1.5deg] shadow-[6px_6px_0_var(--gold)]">
+    <h2 class="font-display font-extrabold text-3xl 2xl:text-5xl tracking-tight text-white uppercase break-all leading-none">{title}<span class="text-gold">.</span></h2>
   </div>
 </div>
